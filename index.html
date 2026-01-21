@@ -169,65 +169,82 @@
   <script>
     // --------- DATA (edítenlo en PRs) ----------
     const elements = [
-      // Nodes (4-partes + extras)
-      { data: { id: 'cardholder', label: 'Tarjetahabiente', type:'core', desc:'Inicia el pago.' } },
-      { data: { id: 'merchant', label: 'Comercio', type:'core', desc:'Punto de aceptación (online/offline).' } },
-      { data: { id: 'issuer', label: 'Emisor', type:'core', desc:'Autoriza/declina, maneja cuenta del tarjetahabiente.' } },
-      { data: { id: 'acquirer', label: 'Adquirente', type:'core', desc:'Adquiere transacciones del comercio.' } },
+  // Nodos (modelo 4 partes + marca/red)
+  { data: { id: 'cardholder', label: 'Tarjetahabiente', type:'core',
+    desc:'Cliente que presenta tarjeta/credenciales para pagar.' } },
 
-      { data: { id: 'network', label: 'Red (Visa/MC)', type:'infra', desc:'Ruteo + reglas + clearing/settlement (según esquema).' } },
-      { data: { id: 'processor', label: 'Procesador', type:'infra', desc:'Conectividad, traducción ISO, ruteo, soporte.' } },
-      { data: { id: 'psp', label: 'PSP/Gateway/Orquestador', type:'infra', desc:'Checkout, tokenización, ruteo, retries, etc.' } },
+  { data: { id: 'merchant', label: 'Comercio', type:'core',
+    desc:'Acepta el pago y envía la solicitud al adquirente.' } },
 
-      { data: { id: 'risk', label: 'Riesgo/Fraude', type:'risk', desc:'Scoring, reglas, 3DS/step-up, monitoreo.' } },
-      { data: { id: 'recon', label: 'Conciliación/Backoffice', type:'infra', desc:'Match de pagos, archivos, settlement, reporting.' } },
+  { data: { id: 'acquirer', label: 'Adquirente', type:'core',
+    desc:'Procesa la transacción para el comercio y enruta hacia la red.' } },
 
-      // Edges (flechas)
-      { data: { id:'e1', source:'cardholder', target:'merchant', label:'Pago (presenta tarjeta / credenciales)', kind:'auth', desc:'Interacción cliente-comercio.' } },
+  { data: { id: 'network', label: 'Marca / Red\n(Visa/MC)', type:'infra',
+    desc:'Interconecta adquirentes y emisores; define reglas y facilita clearing/settlement.' } },
 
-      { data: { id:'e2', source:'merchant', target:'psp', label:'Request de pago', kind:'auth', desc:'El comercio envía intención/orden de pago.' } },
-      { data: { id:'e3', source:'psp', target:'risk', label:'Evaluación', kind:'auth', desc:'Fraude/KYC/3DS según aplique.' } },
-      { data: { id:'e4', source:'risk', target:'psp', label:'Resultado (allow/deny/step-up)', kind:'auth', desc:'Decisión de riesgo.' } },
+  { data: { id: 'issuer', label: 'Banco Emisor', type:'core',
+    desc:'Autoriza/declina la transacción y luego liquida con la red.' } },
 
-      { data: { id:'e5', source:'psp', target:'processor', label:'Autorización', kind:'auth', desc:'Envía mensaje de autorización.' } },
-      { data: { id:'e6', source:'processor', target:'acquirer', label:'Autorización (ruteo)', kind:'auth', desc:'Handoff a adquirente.' } },
-      { data: { id:'e7', source:'acquirer', target:'network', label:'Auth request', kind:'auth', desc:'Ruteo por red.' } },
-      { data: { id:'e8', source:'network', target:'issuer', label:'Auth request', kind:'auth', desc:'Llega al emisor.' } },
+  // Flujo de autorización (request/response)
+  { data: { id:'a1', source:'cardholder', target:'merchant',
+    label:'Pago (compra)', kind:'auth',
+    desc:'El tarjetahabiente paga un producto/servicio.' } },
 
-      { data: { id:'e9', source:'issuer', target:'network', label:'Auth response', kind:'auth', desc:'Aprobación/declinación + códigos.' } },
-      { data: { id:'e10', source:'network', target:'acquirer', label:'Auth response', kind:'auth', desc:'Respuesta vuelve por red.' } },
-      { data: { id:'e11', source:'acquirer', target:'processor', label:'Auth response', kind:'auth', desc:'Respuesta a procesador.' } },
-      { data: { id:'e12', source:'processor', target:'psp', label:'Auth response', kind:'auth', desc:'Respuesta al orquestador/gateway.' } },
-      { data: { id:'e13', source:'psp', target:'merchant', label:'Resultado para checkout', kind:'auth', desc:'Se confirma pago/declina.' } },
+  { data: { id:'a2', source:'merchant', target:'acquirer',
+    label:'Solicitud de autorización', kind:'auth',
+    desc:'El comercio envía el intento de pago al adquirente.' } },
 
-      // Clearing/Settlement (simplificado)
-      { data: { id:'e14', source:'acquirer', target:'network', label:'Clearing (batch)', kind:'clearing', desc:'Envío de presentment/clearing.' } },
-      { data: { id:'e15', source:'network', target:'issuer', label:'Clearing + netting', kind:'clearing', desc:'Intercambio para settlement.' } },
-      { data: { id:'e16', source:'network', target:'recon', label:'Reportes/archivos', kind:'settlement', desc:'Archivos para conciliación.' } },
-      { data: { id:'e17', source:'acquirer', target:'recon', label:'Liquidación + reportes', kind:'settlement', desc:'Montos, fees, fechas valor.' } },
-    ];
+  { data: { id:'a3', source:'acquirer', target:'network',
+    label:'Auth request', kind:'auth',
+    desc:'El adquirente enruta la autorización a la red/marca.' } },
+
+  { data: { id:'a4', source:'network', target:'issuer',
+    label:'Auth request', kind:'auth',
+    desc:'La red enruta al banco emisor para decisión.' } },
+
+  { data: { id:'a5', source:'issuer', target:'network',
+    label:'Auth response (aprob/decl)', kind:'auth',
+    desc:'El emisor responde con aprobación/declinación y códigos.' } },
+
+  { data: { id:'a6', source:'network', target:'acquirer',
+    label:'Auth response', kind:'auth',
+    desc:'La red retorna la respuesta al adquirente.' } },
+
+  { data: { id:'a7', source:'acquirer', target:'merchant',
+    label:'Resultado para checkout', kind:'auth',
+    desc:'El comercio recibe el resultado final del intento.' } },
+
+  // Fees / conceptos (como “flechas conceptuales” del modelo)
+  { data: { id:'f1', source:'merchant', target:'acquirer',
+    label:'(a) Merchant Discount\nComercio → Adquirente', kind:'fee',
+    desc:'Porcentaje/comisión que el comercio paga al adquirente por la transacción.' } },
+
+  { data: { id:'f2', source:'acquirer', target:'network',
+    label:'(b) Fee de red / esquema\nAdquirente → Marca', kind:'fee',
+    desc:'Fee cobrado por la marca/red por procesar/enrutar bajo sus reglas.' } },
+
+  { data: { id:'f3', source:'acquirer', target:'issuer',
+    label:'(b) Interchange\nAdquirente → Emisor', kind:'fee',
+    desc:'Comisión de intercambio que remunera al emisor (usualmente calculada vía reglas de la marca).' } },
+
+  { data: { id:'f4', source:'issuer', target:'merchant',
+    label:'(c) Liquidación (net)\nEmisor → Comercio', kind:'settlement',
+    desc:'Liquidación hacia el comercio (normalmente vía adquirente; aquí se muestra como concepto neto).' } },
+];
 
     // --------- STYLES ----------
     const cy = cytoscape({
       container: document.getElementById('cy'),
       elements,
-      layout: { name: 'cose', animate: true, fit: true, padding: 30 },
-      style: [
-        {
-          selector: 'node',
-          style: {
-            'label': 'data(label)',
-            'color': 'rgba(255,255,255,.92)',
-            'text-outline-color': 'rgba(0,0,0,.35)',
-            'text-outline-width': 2,
-            'font-size': 12,
-            'background-color': '#2b6bff',
-            'border-width': 1,
-            'border-color': 'rgba(255,255,255,.20)',
-            'width': 54,
-            'height': 54
-          }
-        },
+      layout: {
+  name: 'grid',
+  rows: 2,
+  cols: 3,
+  spacingFactor: 1.35,
+  animate: true,
+  fit: true,
+  padding: 40
+},
         { selector: 'node[type="core"]', style: { 'background-color': '#2b6bff' } },
         { selector: 'node[type="infra"]', style: { 'background-color': '#33d6a6' } },
         { selector: 'node[type="risk"]', style: { 'background-color': '#ffcc66' } },
@@ -334,4 +351,5 @@
     };
   </script>
 </body>
+
 </html>
