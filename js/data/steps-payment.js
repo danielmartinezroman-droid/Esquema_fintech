@@ -1,6 +1,6 @@
 /* ============================================
-   Steps Data
-   Definición de los pasos del flujo de pago
+   Steps Data - Card Payment
+   Pasos del flujo de pago con tarjeta
    ============================================ */
 
 const FLOW_STEPS = {
@@ -14,7 +14,6 @@ const FLOW_STEPS = {
             targetActor: 'merchant',
             amount: '$1,000',
             amountLabel: 'Monto',
-            pathId: 'path1',
             pathType: 'payment',
             dotColor: '#E91E63'
         },
@@ -27,7 +26,6 @@ const FLOW_STEPS = {
             targetActor: 'acquirer',
             amount: '$1,000',
             amountLabel: 'Solicitud',
-            pathId: 'path2',
             pathType: 'auth',
             dotColor: '#00A650'
         },
@@ -40,7 +38,6 @@ const FLOW_STEPS = {
             targetActor: 'network',
             amount: 'Auth Req',
             amountLabel: 'Mensaje',
-            pathId: 'path3',
             pathType: 'network-flow',
             dotColor: '#8B5CF6'
         },
@@ -53,7 +50,6 @@ const FLOW_STEPS = {
             targetActor: 'issuer',
             amount: '$1,000',
             amountLabel: 'Autorizar',
-            pathId: 'path4',
             pathType: 'network-flow',
             dotColor: '#8B5CF6'
         },
@@ -66,7 +62,6 @@ const FLOW_STEPS = {
             targetActor: 'network',
             amount: '$990',
             amountLabel: '-1% IC',
-            pathId: 'path5',
             pathType: 'settlement',
             dotColor: '#E6CF00'
         },
@@ -79,7 +74,6 @@ const FLOW_STEPS = {
             targetActor: 'acquirer',
             amount: '$980',
             amountLabel: '-1% Fee',
-            pathId: 'path6',
             pathType: 'settlement',
             dotColor: '#E6CF00'
         },
@@ -92,53 +86,24 @@ const FLOW_STEPS = {
             targetActor: 'merchant',
             amount: '$960',
             amountLabel: 'Neto',
-            pathId: 'path7',
             pathType: 'settlement',
             dotColor: '#E6CF00'
         }
     ]
 };
 
-// SVG Paths para las conexiones
+// SVG Paths para Card Payment
 const SVG_PATHS = {
-    path1: {
-        d: 'M200,95 L580,95',
-        type: 'payment',
-        marker: 'arrowPayment'
-    },
-    path2: {
-        d: 'M665,130 L665,480',
-        type: 'auth',
-        marker: 'arrowAuth'
-    },
-    path3: {
-        d: 'M600,540 L460,400',
-        type: 'network-flow',
-        marker: 'arrowNetwork'
-    },
-    path4: {
-        d: 'M340,400 L200,540',
-        type: 'network-flow',
-        marker: 'arrowNetwork'
-    },
-    path5: {
-        d: 'M200,505 L340,370',
-        type: 'settlement',
-        marker: 'arrowSettle'
-    },
-    path6: {
-        d: 'M460,370 L600,505',
-        type: 'settlement',
-        marker: 'arrowSettle'
-    },
-    path7: {
-        d: 'M630,480 L630,165',
-        type: 'settlement',
-        marker: 'arrowSettle'
-    }
+    path1: { d: 'M200,95 L580,95', type: 'payment', marker: 'arrowPayment' },
+    path2: { d: 'M665,130 L665,480', type: 'auth', marker: 'arrowAuth' },
+    path3: { d: 'M600,540 L460,400', type: 'network-flow', marker: 'arrowNetwork' },
+    path4: { d: 'M340,400 L200,540', type: 'network-flow', marker: 'arrowNetwork' },
+    path5: { d: 'M200,505 L340,370', type: 'settlement', marker: 'arrowSettle' },
+    path6: { d: 'M460,370 L600,505', type: 'settlement', marker: 'arrowSettle' },
+    path7: { d: 'M630,480 L630,165', type: 'settlement', marker: 'arrowSettle' }
 };
 
-// SVG Markers (flechas)
+// SVG Markers
 const SVG_MARKERS = {
     arrowPayment: { color: '#E91E63' },
     arrowAuth: { color: '#00A650' },
@@ -146,7 +111,19 @@ const SVG_MARKERS = {
     arrowSettle: { color: '#E6CF00' }
 };
 
-// Exportar para uso global
+// Label positions
+const LABEL_POSITIONS = [
+    { x: 340, y: 55, width: 120 },
+    { x: 680, y: 280, width: 95 },
+    { x: 500, y: 440, width: 100 },
+    { x: 200, y: 440, width: 110 },
+    { x: 200, y: 400, width: 120 },
+    { x: 475, y: 400, width: 130 },
+    { x: 540, y: 280, width: 90 }
+];
+
+// Exportar
 window.FLOW_STEPS = FLOW_STEPS;
 window.SVG_PATHS = SVG_PATHS;
 window.SVG_MARKERS = SVG_MARKERS;
+window.LABEL_POSITIONS = LABEL_POSITIONS;
