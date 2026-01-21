@@ -73,13 +73,13 @@ const DiagramComponent = {
     renderFlowLabels() {
         const steps = FLOW_STEPS.authorization;
         const labelPositions = [
-            { x: 340, y: 55, width: 120 },   // Step 1
-            { x: 680, y: 280, width: 95 },   // Step 2
-            { x: 500, y: 440, width: 100 },  // Step 3
-            { x: 200, y: 440, width: 110 },  // Step 4
-            { x: 200, y: 400, width: 120 },  // Step 5
-            { x: 475, y: 400, width: 130 },  // Step 6
-            { x: 540, y: 280, width: 90 }    // Step 7
+            { x: 340, y: 55, width: 120 },
+            { x: 680, y: 280, width: 95 },
+            { x: 500, y: 440, width: 100 },
+            { x: 200, y: 440, width: 110 },
+            { x: 200, y: 400, width: 120 },
+            { x: 475, y: 400, width: 130 },
+            { x: 540, y: 280, width: 90 }
         ];
 
         return steps.map((step, i) => {
@@ -148,10 +148,12 @@ const DiagramComponent = {
 
     // Renderizar tarjeta de actor
     renderActorCard(actor) {
+        // Badge de MP (MP Operador / MP Emisor)
         const badgeHTML = actor.badge 
             ? `<span class="mp-badge ${actor.badge.type} visible">${actor.badge.text}</span>` 
             : '';
 
+        // Logos de marcas (solo para network)
         const brandsHTML = actor.brands 
             ? `<div class="brand-logos">
                 ${actor.brands.map(b => `
@@ -160,10 +162,10 @@ const DiagramComponent = {
                </div>` 
             : '';
 
-        // NUEVO: Highlight badge para interchange
-        const highlightBadgeHTML = actor.highlightBadge
-            ? `<div class="highlight-badge" style="background: ${actor.highlightBadge.color}">
-                    ${actor.highlightBadge.text}
+        // Info tag (Interchange, MDR, etc.)
+        const infoTagHTML = actor.infoTag
+            ? `<div class="info-tag ${actor.infoTag.type}" title="${actor.infoTag.tooltip || ''}">
+                    ${actor.infoTag.text}
                </div>`
             : '';
 
@@ -178,7 +180,7 @@ const DiagramComponent = {
                     </div>
                 </div>
                 ${brandsHTML}
-                ${highlightBadgeHTML}
+                ${infoTagHTML}
             </div>
         `;
     },
@@ -225,10 +227,8 @@ const DiagramComponent = {
         const currentSelected = AppState.getSelectedActor();
 
         if (currentSelected === actorId) {
-            // Deseleccionar si ya está seleccionado
             this.clearSelection();
         } else {
-            // Seleccionar nuevo actor
             this.selectActor(actorId);
         }
     },
@@ -237,13 +237,11 @@ const DiagramComponent = {
     selectActor(actorId) {
         AppState.set('selectedActor', actorId);
 
-        // Actualizar clases visuales
         const actorCards = this.container.querySelectorAll('.actor-card');
         actorCards.forEach(card => {
             card.classList.toggle('active', card.dataset.actor === actorId);
         });
 
-        // Actualizar sidebar
         if (window.SidebarComponent) {
             SidebarComponent.showActorDetail(actorId);
         }
@@ -253,13 +251,11 @@ const DiagramComponent = {
     clearSelection() {
         AppState.set('selectedActor', null);
 
-        // Quitar clases activas
         const actorCards = this.container.querySelectorAll('.actor-card');
         actorCards.forEach(card => {
             card.classList.remove('active');
         });
 
-        // Mostrar estado vacío en sidebar
         if (window.SidebarComponent) {
             SidebarComponent.showEmptyState();
         }
