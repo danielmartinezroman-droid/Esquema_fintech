@@ -167,7 +167,12 @@ const ACTORS = {
             { label: 'Interchange (recibe)', value: '~1.5%' },
             { label: 'Interés anual', value: '~18-40%' }
         ],
-        hasInterco: true
+        hasInterco: true,
+       highlightBadge: {
+            text: '💰 Recibe Interchange Fee',
+            color: '#FFE600',
+            description: 'El emisor recibe ~1-2% de cada transacción como compensación por asumir el riesgo de crédito'
+        }
     }
 };
 
