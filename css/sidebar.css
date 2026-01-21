@@ -419,4 +419,25 @@
     .sidebar {
         padding: var(--space-md);
     }
+
+/* Fee Note */
+.fee-note {
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: rgba(255, 230, 0, 0.08);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--meli-yellow);
+}
+
+.fee-note p {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin: 0;
+}
+
+.fee-note strong {
+    color: var(--text-primary);
+}
+   
 }
