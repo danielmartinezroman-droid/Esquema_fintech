@@ -202,7 +202,69 @@
     color: white;
 }
 
-/* Brand Logos (Network Card) */
+/* ============================================
+   INFO TAG - Interchange, MDR, Scheme Fee
+   ============================================ */
+
+.info-tag {
+    margin-top: 12px;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    cursor: help;
+    transition: var(--transition-base);
+}
+
+/* Income tag (recibe dinero) - Verde/Amarillo */
+.info-tag.income {
+    background: linear-gradient(135deg, rgba(255, 230, 0, 0.15), rgba(0, 166, 80, 0.1));
+    color: var(--mp-acquirer);
+    border: 1px solid rgba(0, 166, 80, 0.2);
+    animation: incomeGlow 2.5s ease-in-out infinite;
+}
+
+/* Expense tag (paga dinero) - Rojo suave */
+.info-tag.expense {
+    background: rgba(239, 68, 68, 0.08);
+    color: #DC2626;
+    border: 1px solid rgba(239, 68, 68, 0.15);
+}
+
+/* Animación sutil para income */
+@keyframes incomeGlow {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(255, 230, 0, 0);
+    }
+    50% { 
+        box-shadow: 0 0 12px 2px rgba(255, 230, 0, 0.3);
+    }
+}
+
+/* Hover en info tag */
+.info-tag:hover {
+    transform: scale(1.02);
+}
+
+.info-tag.income:hover {
+    background: linear-gradient(135deg, rgba(255, 230, 0, 0.25), rgba(0, 166, 80, 0.15));
+}
+
+.info-tag.expense:hover {
+    background: rgba(239, 68, 68, 0.12);
+}
+
+/* En card activa, sin animación */
+.actor-card.active .info-tag.income {
+    animation: none;
+    box-shadow: 0 0 8px 1px rgba(255, 230, 0, 0.4);
+}
+
+/* ============================================
+   Brand Logos (Network Card)
+   ============================================ */
+
 .brand-logos {
     display: flex;
     justify-content: center;
@@ -244,7 +306,10 @@
     color: white;
 }
 
-/* Responsive */
+/* ============================================
+   Responsive
+   ============================================ */
+
 @media (max-width: 640px) {
     .actor-card {
         min-width: 120px;
@@ -270,6 +335,11 @@
         padding: 3px 8px;
     }
     
+    .info-tag {
+        font-size: 9px;
+        padding: 6px 8px;
+    }
+    
     .brand-logos {
         gap: 8px;
     }
@@ -279,33 +349,4 @@
         height: 20px;
         font-size: 7px;
     }
-
-   /* Highlight Badge (Interchange indicator) */
-.highlight-badge {
-    margin-top: 12px;
-    padding: 8px 12px;
-    background: var(--meli-yellow);
-    color: var(--meli-dark);
-    font-size: 11px;
-    font-weight: 700;
-    border-radius: var(--radius-sm);
-    text-align: center;
-    animation: subtlePulse 2s ease-in-out infinite;
-}
-
-@keyframes subtlePulse {
-    0%, 100% { 
-        box-shadow: 0 0 0 0 rgba(255, 230, 0, 0.4);
-    }
-    50% { 
-        box-shadow: 0 0 0 6px rgba(255, 230, 0, 0);
-    }
-}
-
-/* Highlight badge en estado activo */
-.actor-card.active .highlight-badge,
-.actor-card.highlight .highlight-badge {
-    animation: none;
-    box-shadow: 0 2px 8px rgba(255, 230, 0, 0.5);
-}
 }
