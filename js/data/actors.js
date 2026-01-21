@@ -29,7 +29,8 @@ const ACTORS = {
                 title: 'Recibe confirmación',
                 description: 'Aprobación o rechazo'
             }
-        ]
+        ],
+        infoTag: null
     },
 
     merchant: {
@@ -61,7 +62,12 @@ const ACTORS = {
         metrics: [
             { label: 'MDR promedio', value: '2-4%' },
             { label: 'Liquidación', value: 'T+1 a T+30' }
-        ]
+        ],
+        infoTag: {
+            text: '📤 Paga MDR',
+            type: 'expense',
+            tooltip: 'Merchant Discount Rate: ~2-4% del monto'
+        }
     },
 
     acquirer: {
@@ -97,7 +103,12 @@ const ACTORS = {
             { label: 'Interchange (paga)', value: '~1.5%' },
             { label: 'Scheme Fee (paga)', value: '~0.1%' }
         ],
-        hasInterco: true
+        hasInterco: true,
+        infoTag: {
+            text: '💸 Paga Interchange + Scheme',
+            type: 'expense',
+            tooltip: 'Paga al emisor y a la red por cada transacción'
+        }
     },
 
     network: {
@@ -131,7 +142,12 @@ const ACTORS = {
                 title: 'Scheme Fee',
                 description: 'Cobra ~0.1-1% por transacción'
             }
-        ]
+        ],
+        infoTag: {
+            text: '🏷️ Cobra Scheme Fee',
+            type: 'income',
+            tooltip: 'Assessment fee: ~0.1% por transacción'
+        }
     },
 
     issuer: {
@@ -139,7 +155,7 @@ const ACTORS = {
         name: 'Banco Emisor',
         shortName: 'Emisor',
         icon: '🏛️',
-        description: 'Banco que emite tarjetas a los clientes. Autoriza o declina transacciones y recibe el interchange fee como compensación.',
+        description: 'Banco que emite tarjetas a los clientes. Autoriza o declina transacciones y recibe el interchange fee como compensación por asumir el riesgo crediticio.',
         color: 'issuer',
         position: { bottom: '8%', left: '5%' },
         badge: {
@@ -159,8 +175,8 @@ const ACTORS = {
             },
             {
                 icon: '💰',
-                title: 'Recibe Interchange',
-                description: '~1-2% de la transacción'
+                title: 'Recibe Interchange Fee',
+                description: '~1-2% por cada transacción'
             }
         ],
         fees: [
@@ -168,10 +184,10 @@ const ACTORS = {
             { label: 'Interés anual', value: '~18-40%' }
         ],
         hasInterco: true,
-       highlightBadge: {
+        infoTag: {
             text: '💰 Recibe Interchange Fee',
-            color: '#FFE600',
-            description: 'El emisor recibe ~1-2% de cada transacción como compensación por asumir el riesgo de crédito'
+            type: 'income',
+            tooltip: 'Compensación por riesgo crediticio: ~1-2%'
         }
     }
 };
