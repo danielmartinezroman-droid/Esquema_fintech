@@ -4,10 +4,8 @@
    ============================================ */
 
 const DiagramComponent = {
-    // Contenedor
     container: null,
 
-    // Inicializar
     init() {
         this.container = document.getElementById('diagramArea');
         if (this.container) {
@@ -17,7 +15,6 @@ const DiagramComponent = {
         console.log('📊 DiagramComponent initialized');
     },
 
-    // Renderizar diagrama completo
     render() {
         this.container.innerHTML = `
             <div class="diagram-container">
@@ -28,7 +25,6 @@ const DiagramComponent = {
         `;
     },
 
-    // Renderizar SVG de conexiones
     renderSVG() {
         return `
             <svg class="connections-svg" viewBox="0 0 800 700" preserveAspectRatio="xMidYMid meet">
@@ -50,7 +46,6 @@ const DiagramComponent = {
         `;
     },
 
-    // Renderizar markers (flechas)
     renderMarkers() {
         return Object.entries(SVG_MARKERS).map(([id, config]) => `
             <marker id="${id}" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
@@ -59,7 +54,6 @@ const DiagramComponent = {
         `).join('');
     },
 
-    // Renderizar paths
     renderPaths() {
         return Object.entries(SVG_PATHS).map(([id, config]) => `
             <path id="${id}" 
@@ -69,21 +63,13 @@ const DiagramComponent = {
         `).join('');
     },
 
-    // Renderizar labels de flujo
     renderFlowLabels() {
-        const steps = FLOW_STEPS.authorization;
-        const labelPositions = [
-            { x: 340, y: 55, width: 120 },
-            { x: 680, y: 280, width: 95 },
-            { x: 500, y: 440, width: 100 },
-            { x: 200, y: 440, width: 110 },
-            { x: 200, y: 400, width: 120 },
-            { x: 475, y: 400, width: 130 },
-            { x: 540, y: 280, width: 90 }
-        ];
+        const flowKey = window.CURRENT_FLOW?.stepsKey || 'authorization';
+        const steps = FLOW_STEPS[flowKey] || [];
+        const positions = window.LABEL_POSITIONS || [];
 
         return steps.map((step, i) => {
-            const pos = labelPositions[i];
+            const pos = positions[i] || { x: 400, y: 350, width: 100 };
             return `
                 <g class="flow-label-group" data-step="${step.num}">
                     <rect class="flow-label-bg" 
@@ -102,29 +88,22 @@ const DiagramComponent = {
         }).join('');
     },
 
-    // Obtener icono de paso
     getStepIcon(num) {
-        const icons = ['①', '②', '③', '④', '⑤', '⑥', '⑦'];
+        const icons = ['①', '②', '③', '④', '⑤', '⑥', '⑦', '⑧', '⑨'];
         return icons[num - 1] || num;
     },
 
-    // Obtener título corto
     getShortTitle(title) {
-        const shortTitles = {
-            'Cliente paga al comercio': 'Paga',
-            'Comercio informa al adquirente': 'Solicitud',
-            'Adquirente enruta a la marca': 'Enruta',
-            'La red contacta al emisor': 'Autoriza',
-            'Emisor paga a la red': 'Paga a Red',
-            'Red paga al adquirente': 'Paga a Acq',
-            'Adquirente liquida al comercio': 'Liquida'
-        };
-        return shortTitles[title] || title.split(' ')[0];
+        // Devuelve la primera palabra o primeras 10 letras
+        const words = title.split(' ');
+        if (words[0].length <= 10) return words[0];
+        return title.substring(0, 10) + '...';
     },
 
-    // Renderizar dots animados
     renderDots() {
-        const steps = FLOW_STEPS.authorization;
+        const flowKey = window.CURRENT_FLOW?.stepsKey || 'authorization';
+        const steps = FLOW_STEPS[flowKey] || [];
+        
         return steps.map((step, i) => `
             <circle class="flow-dot" 
                     id="dot${i + 1}" 
@@ -132,28 +111,31 @@ const DiagramComponent = {
                     fill="${step.dotColor}" 
                     filter="url(#glow)">
                 <animateMotion dur="0.8s" fill="freeze" begin="indefinite">
-                    <mpath href="#${step.pathId}"/>
+                    <mpath href="#path${i + 1}"/>
                 </animateMotion>
             </circle>
         `).join('');
     },
 
-    // Renderizar actores
     renderActors() {
-        return ACTOR_ORDER.map(actorId => {
+        const actorIds = getFlowActors();
+        return actorIds.map(actorId => {
             const actor = ACTORS[actorId];
-            return this.renderActorCard(actor);
+            if (!actor) return '';
+            return this.renderActorCard(actor, actorId);
         }).join('');
     },
 
-    // Renderizar tarjeta de actor
-    renderActorCard(actor) {
-        // Badge de MP (MP Operador / MP Emisor)
+    renderActorCard(actor, actorId) {
+        const position = getActorPosition(actorId);
+        const positionStyle = Object.entries(position)
+            .map(([key, value]) => `${key}: ${value}`)
+            .join('; ');
+
         const badgeHTML = actor.badge 
             ? `<span class="mp-badge ${actor.badge.type} visible">${actor.badge.text}</span>` 
             : '';
 
-        // Logos de marcas (solo para network)
         const brandsHTML = actor.brands 
             ? `<div class="brand-logos">
                 ${actor.brands.map(b => `
@@ -162,7 +144,6 @@ const DiagramComponent = {
                </div>` 
             : '';
 
-        // Info tag (Interchange, MDR, etc.)
         const infoTagHTML = actor.infoTag
             ? `<div class="info-tag ${actor.infoTag.type}" title="${actor.infoTag.tooltip || ''}">
                     ${actor.infoTag.text}
@@ -170,7 +151,7 @@ const DiagramComponent = {
             : '';
 
         return `
-            <div class="actor-card" data-actor="${actor.id}">
+            <div class="actor-card" data-actor="${actorId}" style="${positionStyle}">
                 ${badgeHTML}
                 <div class="actor-header">
                     <div class="actor-icon">${actor.icon}</div>
@@ -185,7 +166,6 @@ const DiagramComponent = {
         `;
     },
 
-    // Renderizar banner de paso
     renderStepBanner() {
         return `
             <div class="step-banner" id="stepBanner">
@@ -202,9 +182,7 @@ const DiagramComponent = {
         `;
     },
 
-    // Bindear eventos
     bindEvents() {
-        // Click en actores
         const actorCards = this.container.querySelectorAll('.actor-card');
         actorCards.forEach(card => {
             card.addEventListener('click', (e) => {
@@ -213,7 +191,6 @@ const DiagramComponent = {
             });
         });
 
-        // Click fuera para deseleccionar
         this.container.addEventListener('click', (e) => {
             if (!e.target.closest('.actor-card')) {
                 this.clearSelection();
@@ -221,7 +198,6 @@ const DiagramComponent = {
         });
     },
 
-    // Manejar click en actor
     handleActorClick(card) {
         const actorId = card.dataset.actor;
         const currentSelected = AppState.getSelectedActor();
@@ -233,7 +209,6 @@ const DiagramComponent = {
         }
     },
 
-    // Seleccionar actor
     selectActor(actorId) {
         AppState.set('selectedActor', actorId);
 
@@ -247,7 +222,6 @@ const DiagramComponent = {
         }
     },
 
-    // Limpiar selección
     clearSelection() {
         AppState.set('selectedActor', null);
 
@@ -262,5 +236,4 @@ const DiagramComponent = {
     }
 };
 
-// Exportar para uso global
 window.DiagramComponent = DiagramComponent;
