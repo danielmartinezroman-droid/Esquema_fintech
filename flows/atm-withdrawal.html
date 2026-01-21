@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retiro ATM — Money Out</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/actors.css">
+    <link rel="stylesheet" href="../css/connections.css">
+    <link rel="stylesheet" href="../css/sidebar.css">
+    <link rel="stylesheet" href="../css/animations.css">
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <!-- Header -->
+    <header class="header" id="header"></header>
+
+    <!-- Main Content -->
+    <main class="main-container">
+        <!-- Diagram Area -->
+        <div class="diagram-area" id="diagramArea"></div>
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar"></aside>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        // Configuración del flujo actual
+        window.CURRENT_FLOW = {
+            id: 'atm-withdrawal',
+            name: 'Retiro en Cajero ATM',
+            description: 'Money Out',
+            stepsKey: 'atm'
+        };
+    </script>
+    <script src="../js/data/actors.js"></script>
+    <script src="../js/data/steps-atm.js"></script>
+    <script src="../js/data/fees.js"></script>
+    <script src="../js/components/header.js"></script>
+    <script src="../js/components/diagram.js"></script>
+    <script src="../js/components/sidebar.js"></script>
+    <script src="../js/core/state.js"></script>
+    <script src="../js/core/animation.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>
