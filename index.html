@@ -279,3 +279,1695 @@
             left: 50%;
             transform: translateX(-50%);
             width: 60px;
+            height: 6px;
+            background: var(--meli-yellow);
+            border-radius: 3px;
+        }
+
+        .center-title .label {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--meli-dark);
+            margin-top: 8px;
+            letter-spacing: -0.3px;
+        }
+
+        /* Network Brands */
+        .network-brands {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) translateY(85px);
+            display: flex;
+            gap: 8px;
+            z-index: 6;
+        }
+
+        .brand-tag {
+            padding: 6px 12px;
+            background: var(--meli-white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .brand-tag-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        /* SVG Connections */
+        .connections-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .flow-path {
+            fill: none;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            opacity: 0.7;
+            transition: opacity 0.4s ease, stroke-width 0.3s ease;
+        }
+
+        .flow-path.auth { 
+            stroke: var(--flow-auth); 
+        }
+        
+        .flow-path.data { 
+            stroke: var(--flow-data); 
+            stroke-dasharray: 8 6;
+        }
+        
+        .flow-path.money { 
+            stroke: var(--flow-money-stroke); 
+            stroke-dasharray: 4 4;
+        }
+
+        .flow-path.highlight {
+            opacity: 1;
+            stroke-width: 3.5;
+        }
+
+        .flow-path.dim {
+            opacity: 0.15;
+        }
+
+        /* Animated Flow Dot */
+        .flow-dot {
+            fill: var(--flow-auth);
+            opacity: 0;
+        }
+
+        .flow-dot.active {
+            opacity: 1;
+        }
+
+        .flow-label-bg {
+            fill: var(--meli-white);
+            rx: 12;
+        }
+
+        .flow-label {
+            font-size: 11px;
+            font-weight: 600;
+            fill: var(--text-secondary);
+            text-anchor: middle;
+            dominant-baseline: middle;
+        }
+
+        .flow-step-num {
+            font-size: 10px;
+            font-weight: 700;
+            fill: var(--meli-white);
+        }
+
+        .flow-step-circle {
+            fill: var(--flow-auth);
+        }
+
+        /* Actor Cards */
+        .actor-card {
+            position: absolute;
+            width: 175px;
+            padding: 20px;
+            background: var(--meli-white);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            z-index: 10;
+        }
+
+        .actor-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 16px;
+            border: 2px solid transparent;
+            transition: border-color 0.3s ease;
+            pointer-events: none;
+        }
+
+        .actor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+
+        .actor-card.active {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+        }
+
+        .actor-card.active::before {
+            border-color: var(--meli-yellow);
+        }
+
+        .actor-card.highlight {
+            z-index: 20;
+            transform: scale(1.05);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.15);
+        }
+
+        .actor-card.dim {
+            opacity: 0.4;
+            transform: scale(0.98);
+        }
+
+        /* Positioning */
+        .actor-card[data-actor="cardholder"] {
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .actor-card[data-actor="cardholder"]:hover,
+        .actor-card[data-actor="cardholder"].active {
+            transform: translateX(-50%) translateY(-4px);
+        }
+        .actor-card[data-actor="cardholder"].highlight {
+            transform: translateX(-50%) scale(1.05);
+        }
+        .actor-card[data-actor="cardholder"].dim {
+            transform: translateX(-50%) scale(0.98);
+        }
+
+        .actor-card[data-actor="merchant"] {
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+        }
+        .actor-card[data-actor="merchant"]:hover,
+        .actor-card[data-actor="merchant"].active {
+            transform: translateY(-50%) translateY(-4px);
+        }
+        .actor-card[data-actor="merchant"].highlight {
+            transform: translateY(-50%) scale(1.05);
+        }
+        .actor-card[data-actor="merchant"].dim {
+            transform: translateY(-50%) scale(0.98);
+        }
+
+        .actor-card[data-actor="acquirer"] {
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .actor-card[data-actor="acquirer"]:hover,
+        .actor-card[data-actor="acquirer"].active {
+            transform: translateX(-50%) translateY(-4px);
+        }
+        .actor-card[data-actor="acquirer"].highlight {
+            transform: translateX(-50%) scale(1.05);
+        }
+        .actor-card[data-actor="acquirer"].dim {
+            transform: translateX(-50%) scale(0.98);
+        }
+
+        .actor-card[data-actor="issuer"] {
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+        .actor-card[data-actor="issuer"]:hover,
+        .actor-card[data-actor="issuer"].active {
+            transform: translateY(-50%) translateY(-4px);
+        }
+        .actor-card[data-actor="issuer"].highlight {
+            transform: translateY(-50%) scale(1.05);
+        }
+        .actor-card[data-actor="issuer"].dim {
+            transform: translateY(-50%) scale(0.98);
+        }
+
+        .actor-step {
+            position: absolute;
+            top: -12px;
+            right: -12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--meli-dark);
+            background: var(--meli-yellow);
+            box-shadow: 0 4px 12px var(--meli-yellow-glow);
+            z-index: 2;
+        }
+
+        .actor-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            font-size: 26px;
+            transition: transform 0.3s ease;
+        }
+
+        .actor-card:hover .actor-icon {
+            transform: scale(1.1);
+        }
+
+        .actor-card[data-actor="cardholder"] .actor-icon {
+            background: var(--cardholder-light);
+        }
+        .actor-card[data-actor="merchant"] .actor-icon {
+            background: var(--merchant-light);
+        }
+        .actor-card[data-actor="acquirer"] .actor-icon {
+            background: var(--acquirer-light);
+        }
+        .actor-card[data-actor="issuer"] .actor-icon {
+            background: var(--issuer-light);
+        }
+
+        .actor-name {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .actor-desc {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .actor-tag {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 4px 10px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-radius: 20px;
+        }
+
+        .actor-card[data-actor="cardholder"] .actor-tag {
+            background: var(--cardholder-light);
+            color: var(--cardholder);
+        }
+        .actor-card[data-actor="merchant"] .actor-tag {
+            background: var(--merchant-light);
+            color: var(--merchant);
+        }
+        .actor-card[data-actor="acquirer"] .actor-tag {
+            background: var(--acquirer-light);
+            color: var(--acquirer);
+        }
+        .actor-card[data-actor="issuer"] .actor-tag {
+            background: var(--issuer-light);
+            color: var(--issuer);
+        }
+
+        /* Step Info Banner */
+        .step-banner {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--meli-dark);
+            color: var(--meli-white);
+            padding: 14px 28px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            z-index: 50;
+        }
+
+        .step-banner.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .step-banner-num {
+            width: 36px;
+            height: 36px;
+            background: var(--meli-yellow);
+            color: var(--meli-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 16px;
+        }
+
+        .step-banner-text h4 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .step-banner-text p {
+            font-size: 12px;
+            color: var(--meli-gray-300);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            border-left: 1px solid var(--border);
+            background: var(--meli-white);
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-section {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .panel-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .panel-badge {
+            padding: 4px 10px;
+            background: var(--meli-yellow);
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--meli-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Flow Controls */
+        .flow-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .flow-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px 16px;
+            background: var(--meli-white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .flow-btn:hover {
+            border-color: var(--border-active);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .flow-btn.active {
+            border-color: var(--meli-yellow);
+            background: rgba(255, 230, 0, 0.05);
+        }
+
+        .flow-btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .flow-btn[data-flow="auth"] .flow-btn-icon {
+            background: var(--cardholder-light);
+        }
+        .flow-btn[data-flow="clearing"] .flow-btn-icon {
+            background: var(--merchant-light);
+        }
+        .flow-btn[data-flow="settlement"] .flow-btn-icon {
+            background: rgba(255, 230, 0, 0.15);
+        }
+
+        .flow-btn-text h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .flow-btn-text p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .flow-btn-arrow {
+            margin-left: auto;
+            color: var(--text-muted);
+            font-size: 16px;
+            transition: transform 0.2s ease;
+        }
+
+        .flow-btn:hover .flow-btn-arrow {
+            transform: translateX(4px);
+        }
+
+        /* Play Button */
+        .play-section {
+            display: flex;
+            gap: 10px;
+        }
+
+        .play-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 14px 20px;
+            background: var(--meli-yellow);
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--meli-dark);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .play-btn:hover {
+            background: var(--meli-yellow-dark);
+            box-shadow: 0 4px 16px var(--meli-yellow-glow);
+            transform: translateY(-2px);
+        }
+
+        .play-btn.playing {
+            background: var(--meli-dark);
+            color: var(--meli-white);
+        }
+
+        .play-btn-icon {
+            font-size: 16px;
+        }
+
+        .speed-btn {
+            width: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--meli-white);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .speed-btn:hover {
+            border-color: var(--border-active);
+        }
+
+        /* Legend */
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            background: var(--meli-white);
+            border-radius: 10px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .legend-line {
+            width: 24px;
+            height: 3px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .legend-line.auth { background: var(--flow-auth); }
+        .legend-line.data { 
+            background: repeating-linear-gradient(90deg, var(--flow-data), var(--flow-data) 5px, transparent 5px, transparent 8px);
+        }
+        .legend-line.money { 
+            background: repeating-linear-gradient(90deg, var(--flow-money-stroke), var(--flow-money-stroke) 3px, transparent 3px, transparent 6px);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* Detail Panel */
+        .detail-panel {
+            flex: 1;
+            min-height: 0;
+        }
+
+        .detail-empty {
+            text-align: center;
+            padding: 48px 24px;
+        }
+
+        .detail-empty-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            background: var(--meli-white);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+        }
+
+        .detail-empty h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .detail-empty p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            max-width: 240px;
+            margin: 0 auto;
+        }
+
+        .detail-content {
+            display: none;
+        }
+
+        .detail-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .detail-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .detail-info h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .detail-info p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .detail-section {
+            margin-bottom: 20px;
+        }
+
+        .detail-section-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .detail-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+
+        .detail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px;
+            background: var(--meli-white);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .detail-item:hover {
+            border-color: var(--border);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .detail-item-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        .detail-item-text h4 {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .detail-item-text p {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .detail-item-arrow {
+            margin-left: auto;
+            color: var(--text-muted);
+            font-size: 14px;
+            transition: transform 0.2s ease;
+        }
+
+        .detail-item:hover .detail-item-arrow {
+            transform: translateX(4px);
+            color: var(--text-secondary);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+
+        .stat-card {
+            padding: 14px;
+            background: var(--meli-white);
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Footer Info */
+        .footer-info {
+            padding: 16px;
+            background: rgba(255, 230, 0, 0.08);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 230, 0, 0.2);
+        }
+
+        .footer-info p {
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .footer-info strong {
+            color: var(--text-primary);
+        }
+
+        /* Progress Indicator */
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--border);
+            border-radius: 0 0 16px 16px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--meli-yellow);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 1fr 380px;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-left: none;
+                border-top: 1px solid var(--border);
+                max-height: 60vh;
+            }
+
+            .diagram-wrapper {
+                max-width: 520px;
+            }
+
+            .header-nav {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            header {
+                padding: 0 16px;
+            }
+
+            .diagram-area {
+                padding: 24px 16px;
+            }
+
+            .actor-card {
+                width: 130px;
+                padding: 14px;
+            }
+
+            .actor-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .actor-name {
+                font-size: 13px;
+            }
+
+            .actor-desc {
+                display: none;
+            }
+
+            .actor-tag {
+                display: none;
+            }
+
+            .center-title .main-number {
+                font-size: 64px;
+            }
+
+            .sidebar {
+                padding: 16px;
+            }
+
+            .legend-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animation Keyframes */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        @keyframes flowDot {
+            0% { offset-distance: 0%; }
+            100% { offset-distance: 100%; }
+        }
+
+        .pulse-ring {
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+
+    <header>
+        <div class="logo-section">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#2b2b2b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                    <path d="M8 12h8M12 8v8"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <h1>Modelo de 4 Partes</h1>
+                <span>Ecosistema de Pagos con Tarjeta</span>
+            </div>
+        </div>
+
+        <nav class="header-nav">
+            <button class="nav-item active">Modelo Base</button>
+            <button class="nav-item">Fees</button>
+            <button class="nav-item">Settlement</button>
+            <button class="nav-item">Chargebacks</button>
+        </nav>
+
+        <div class="header-actions">
+            <button class="btn btn-icon" title="Exportar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+            </button>
+            <button class="btn btn-icon" title="Fullscreen">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="15 3 21 3 21 9"/>
+                    <polyline points="9 21 3 21 3 15"/>
+                    <line x1="21" y1="3" x2="14" y2="10"/>
+                    <line x1="3" y1="21" x2="10" y2="14"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <div class="diagram-area">
+            <div class="diagram-wrapper">
+                <!-- SVG Connections -->
+                <svg class="connections-svg" viewBox="0 0 680 680">
+                    <defs>
+                        <!-- Arrow Markers -->
+                        <marker id="arrowAuth" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                            <path d="M2,2 L10,6 L2,10 L4,6 Z" fill="#3483FA"/>
+                        </marker>
+                        <marker id="arrowData" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                            <path d="M2,2 L10,6 L2,10 L4,6 Z" fill="#00A650"/>
+                        </marker>
+                        <marker id="arrowMoney" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+                            <path d="M2,2 L10,6 L2,10 L4,6 Z" fill="#E6CF00"/>
+                        </marker>
+
+                        <!-- Glow Filter -->
+                        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- Flow Paths: Cardholder → Merchant -->
+                    <path id="path1" class="flow-path auth" 
+                          d="M340,95 Q480,95 515,260" 
+                          marker-end="url(#arrowAuth)"/>
+                    
+                    <!-- Flow Paths: Merchant → Acquirer -->
+                    <path id="path2" class="flow-path auth" 
+                          d="M515,400 Q480,560 340,585" 
+                          marker-end="url(#arrowAuth)"/>
+                    
+                    <!-- Flow Paths: Acquirer → Issuer (via Network) -->
+                    <path id="path3" class="flow-path auth" 
+                          d="M250,585 Q100,520 100,340" 
+                          marker-end="url(#arrowAuth)"/>
+                    
+                    <!-- Flow Paths: Issuer → Response back -->
+                    <path id="path4" class="flow-path auth" 
+                          d="M165,260 Q200,95 340,95" 
+                          marker-end="url(#arrowAuth)"/>
+
+                    <!-- Flow Labels with backgrounds -->
+                    <g class="flow-label-group" data-step="1">
+                        <rect class="flow-label-bg" x="400" y="130" width="70" height="24" fill="white" stroke="#E5E5E5"/>
+                        <text class="flow-label" x="435" y="145">① Paga</text>
+                    </g>
+
+                    <g class="flow-label-group" data-step="2">
+                        <rect class="flow-label-bg" x="445" y="470" width="85" height="24" fill="white" stroke="#E5E5E5"/>
+                        <text class="flow-label" x="488" y="485">② Solicitud</text>
+                    </g>
+
+                    <g class="flow-label-group" data-step="3">
+                        <rect class="flow-label-bg" x="95" y="450" width="95" height="24" fill="white" stroke="#E5E5E5"/>
+                        <text class="flow-label" x="143" y="465">③ Autoriza</text>
+                    </g>
+
+                    <g class="flow-label-group" data-step="4">
+                        <rect class="flow-label-bg" x="175" y="130" width="95" height="24" fill="white" stroke="#E5E5E5"/>
+                        <text class="flow-label" x="223" y="145">④ Respuesta</text>
+                    </g>
+
+                    <!-- Animated Dots -->
+                    <circle class="flow-dot" id="dot1" r="6" fill="#3483FA" filter="url(#glow)">
+                        <animateMotion dur="1.5s" repeatCount="1" fill="freeze" begin="indefinite">
+                            <mpath href="#path1"/>
+                        </animateMotion>
+                    </circle>
+                    <circle class="flow-dot" id="dot2" r="6" fill="#3483FA" filter="url(#glow)">
+                        <animateMotion dur="1.5s" repeatCount="1" fill="freeze" begin="indefinite">
+                            <mpath href="#path2"/>
+                        </animateMotion>
+                    </circle>
+                    <circle class="flow-dot" id="dot3" r="6" fill="#3483FA" filter="url(#glow)">
+                        <animateMotion dur="1.5s" repeatCount="1" fill="freeze" begin="indefinite">
+                            <mpath href="#path3"/>
+                        </animateMotion>
+                    </circle>
+                    <circle class="flow-dot" id="dot4" r="6" fill="#3483FA" filter="url(#glow)">
+                        <animateMotion dur="1.5s" repeatCount="1" fill="freeze" begin="indefinite">
+                            <mpath href="#path4"/>
+                        </animateMotion>
+                    </circle>
+                </svg>
+
+                <!-- Center Title -->
+                <div class="center-title">
+                    <div class="subtitle">Modelo de</div>
+                    <div class="main-number">4</div>
+                    <div class="label">Partes</div>
+                </div>
+
+                <!-- Network Brands -->
+                <div class="network-brands">
+                    <div class="brand-tag">
+                        <div class="brand-tag-icon" style="background: #1A1F71; color: white;">V</div>
+                        Visa
+                    </div>
+                    <div class="brand-tag">
+                        <div class="brand-tag-icon" style="background: #EB001B; color: white;">M</div>
+                        Mastercard
+                    </div>
+                    <div class="brand-tag">
+                        <div class="brand-tag-icon" style="background: #006FCF; color: white;">A</div>
+                        Amex
+                    </div>
+                </div>
+
+                <!-- Actor Cards -->
+                <div class="actor-card" data-actor="cardholder">
+                    <span class="actor-step">1</span>
+                    <div class="actor-icon">👤</div>
+                    <div class="actor-name">Tarjetahabiente</div>
+                    <div class="actor-desc">Cliente que paga con tarjeta</div>
+                    <span class="actor-tag">Consumidor</span>
+                </div>
+
+                <div class="actor-card" data-actor="merchant">
+                    <span class="actor-step">2</span>
+                    <div class="actor-icon">🏪</div>
+                    <div class="actor-name">Comercio</div>
+                    <div class="actor-desc">Acepta pagos con tarjeta</div>
+                    <span class="actor-tag">Vendedor</span>
+                </div>
+
+                <div class="actor-card" data-actor="acquirer">
+                    <span class="actor-step">3</span>
+                    <div class="actor-icon">🏦</div>
+                    <div class="actor-name">Adquirente</div>
+                    <div class="actor-desc">Procesa para el comercio</div>
+                    <span class="actor-tag">Procesador</span>
+                </div>
+
+                <div class="actor-card" data-actor="issuer">
+                    <span class="actor-step">4</span>
+                    <div class="actor-icon">🏛️</div>
+                    <div class="actor-name">Banco Emisor</div>
+                    <div class="actor-desc">Emite la tarjeta</div>
+                    <span class="actor-tag">Emisor</span>
+                </div>
+
+                <!-- Step Info Banner -->
+                <div class="step-banner" id="stepBanner">
+                    <div class="step-banner-num" id="stepNum">1</div>
+                    <div class="step-banner-text">
+                        <h4 id="stepTitle">Iniciando pago</h4>
+                        <p id="stepDesc">El tarjetahabiente presenta su tarjeta</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <aside class="sidebar">
+            <!-- Flow Controls -->
+            <div class="panel-section">
+                <div class="panel-header">
+                    <span class="panel-title">Simular Flujo</span>
+                    <span class="panel-badge">Interactivo</span>
+                </div>
+                
+                <div class="play-section">
+                    <button class="play-btn" id="playBtn">
+                        <span class="play-btn-icon">▶</span>
+                        <span id="playText">Iniciar Animación</span>
+                    </button>
+                    <button class="speed-btn" id="speedBtn" title="Velocidad">1x</button>
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+            </div>
+
+            <!-- Flow Types -->
+            <div class="panel-section">
+                <div class="panel-header">
+                    <span class="panel-title">Tipo de Flujo</span>
+                </div>
+                <div class="flow-controls">
+                    <div class="flow-btn active" data-flow="auth">
+                        <div class="flow-btn-icon">🔐</div>
+                        <div class="flow-btn-text">
+                            <h4>Autorización</h4>
+                            <p>Request/Response en tiempo real</p>
+                        </div>
+                        <span class="flow-btn-arrow">→</span>
+                    </div>
+                    <div class="flow-btn" data-flow="clearing">
+                        <div class="flow-btn-icon">📋</div>
+                        <div class="flow-btn-text">
+                            <h4>Clearing</h4>
+                            <p>Compensación de transacciones</p>
+                        </div>
+                        <span class="flow-btn-arrow">→</span>
+                    </div>
+                    <div class="flow-btn" data-flow="settlement">
+                        <div class="flow-btn-icon">💰</div>
+                        <div class="flow-btn-text">
+                            <h4>Settlement</h4>
+                            <p>Liquidación de fondos</p>
+                        </div>
+                        <span class="flow-btn-arrow">→</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend -->
+            <div class="panel-section">
+                <div class="panel-header">
+                    <span class="panel-title">Leyenda</span>
+                </div>
+                <div class="legend-grid">
+                    <div class="legend-item">
+                        <span class="legend-line auth"></span>
+                        Autorización
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-line data"></span>
+                        Datos / Clearing
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-line money"></span>
+                        Fondos
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background: var(--meli-yellow)"></span>
+                        Red / Marca
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detail Panel -->
+            <div class="panel-section detail-panel">
+                <div class="panel-header">
+                    <span class="panel-title">Detalle del Actor</span>
+                </div>
+                
+                <div class="detail-empty" id="detailEmpty">
+                    <div class="detail-empty-icon">👆</div>
+                    <h3>Selecciona un actor</h3>
+                    <p>Haz clic en cualquier actor del diagrama para ver información detallada.</p>
+                </div>
+
+                <!-- Cardholder Detail -->
+                <div class="detail-content" data-detail="cardholder">
+                    <div class="detail-header">
+                        <div class="detail-icon" style="background: var(--cardholder-light);">👤</div>
+                        <div class="detail-info">
+                            <h3>Tarjetahabiente</h3>
+                            <p>Cliente final que paga</p>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Descripción</div>
+                        <p class="detail-description">
+                            Persona o entidad que posee una tarjeta de crédito o débito emitida por un banco emisor. Inicia la transacción al presentar sus credenciales de pago en el comercio.
+                        </p>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Acciones en el flujo</div>
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--cardholder-light);">💳</div>
+                                <div class="detail-item-text">
+                                    <h4>Presenta credenciales</h4>
+                                    <p>PAN, CVV, fecha exp. o token</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--cardholder-light);">🔐</div>
+                                <div class="detail-item-text">
+                                    <h4>Autentica (si aplica)</h4>
+                                    <p>3DS, PIN, biometría</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--cardholder-light);">✅</div>
+                                <div class="detail-item-text">
+                                    <h4>Recibe confirmación</h4>
+                                    <p>Aprobado o rechazado</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Merchant Detail -->
+                <div class="detail-content" data-detail="merchant">
+                    <div class="detail-header">
+                        <div class="detail-icon" style="background: var(--merchant-light);">🏪</div>
+                        <div class="detail-info">
+                            <h3>Comercio</h3>
+                            <p>Punto de venta / E-commerce</p>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Descripción</div>
+                        <p class="detail-description">
+                            Negocio que acepta pagos con tarjeta. Tiene contrato con un adquirente y utiliza terminal POS, integración API o pasarela de pagos para procesar transacciones.
+                        </p>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Acciones en el flujo</div>
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--merchant-light);">📡</div>
+                                <div class="detail-item-text">
+                                    <h4>Captura datos de tarjeta</h4>
+                                    <p>POS, chip, contactless, online</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--merchant-light);">📤</div>
+                                <div class="detail-item-text">
+                                    <h4>Envía al adquirente</h4>
+                                    <p>Solicitud de autorización</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--merchant-light);">💵</div>
+                                <div class="detail-item-text">
+                                    <h4>Recibe liquidación</h4>
+                                    <p>Fondos menos MDR</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Métricas típicas</div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">2.5%</div>
+                                <div class="stat-label">MDR promedio</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">T+1</div>
+                                <div class="stat-label">Liquidación</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Acquirer Detail -->
+                <div class="detail-content" data-detail="acquirer">
+                    <div class="detail-header">
+                        <div class="detail-icon" style="background: var(--acquirer-light);">🏦</div>
+                        <div class="detail-info">
+                            <h3>Adquirente</h3>
+                            <p>Procesador del comercio</p>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Descripción</div>
+                        <p class="detail-description">
+                            Entidad financiera o procesadora que tiene contrato con el comercio. Enruta transacciones hacia las redes de pago (Visa, MC) y liquida fondos al comercio.
+                        </p>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Acciones en el flujo</div>
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--acquirer-light);">🔀</div>
+                                <div class="detail-item-text">
+                                    <h4>Enruta a la red</h4>
+                                    <p>Identifica marca por BIN</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--acquirer-light);">📊</div>
+                                <div class="detail-item-text">
+                                    <h4>Gestiona clearing</h4>
+                                    <p>Batch de transacciones</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--acquirer-light);">💰</div>
+                                <div class="detail-item-text">
+                                    <h4>Cobra MDR</h4>
+                                    <p>Merchant Discount Rate</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Fees que paga</div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">~1.5%</div>
+                                <div class="stat-label">Interchange</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">~0.1%</div>
+                                <div class="stat-label">Scheme Fee</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Issuer Detail -->
+                <div class="detail-content" data-detail="issuer">
+                    <div class="detail-header">
+                        <div class="detail-icon" style="background: var(--issuer-light);">🏛️</div>
+                        <div class="detail-info">
+                            <h3>Banco Emisor</h3>
+                            <p>Emite tarjetas a clientes</p>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Descripción</div>
+                        <p class="detail-description">
+                            Banco o institución que emite tarjetas a los tarjetahabientes. Autoriza o declina transacciones en tiempo real, cobra al cliente y recibe el interchange fee.
+                        </p>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Acciones en el flujo</div>
+                        <div class="detail-list">
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--issuer-light);">🔍</div>
+                                <div class="detail-item-text">
+                                    <h4>Valida y autoriza</h4>
+                                    <p>Fondos, fraude, límites</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--issuer-light);">📝</div>
+                                <div class="detail-item-text">
+                                    <h4>Registra movimiento</h4>
+                                    <p>En cuenta del cliente</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                            <div class="detail-item">
+                                <div class="detail-item-icon" style="background: var(--issuer-light);">🔄</div>
+                                <div class="detail-item-text">
+                                    <h4>Recibe interchange</h4>
+                                    <p>Ingreso por transacción</p>
+                                </div>
+                                <span class="detail-item-arrow">→</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="detail-section">
+                        <div class="detail-section-title">Ingresos típicos</div>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value">~1.5%</div>
+                                <div class="stat-label">Interchange</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">~18%</div>
+                                <div class="stat-label">Interés anual</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer Info -->
+            <div class="footer-info">
+                <p>
+                    <strong>💡 Tip:</strong> Este modelo es la base para entender el flujo de pagos. 
+                    Próximamente: <strong>Fees detallados</strong>, <strong>3D Secure</strong>, y <strong>Chargebacks</strong>.
+                </p>
+            </div>
+        </aside>
+    </main>
+
+    <script>
+        // ==================== STATE ====================
+        const state = {
+            selectedActor: null,
+            isPlaying: false,
+            currentStep: 0,
+            speed: 1,
+            activeFlow: 'auth'
+        };
+
+        const stepData = [
+            { num: 1, title: 'Cliente inicia pago', desc: 'El tarjetahabiente presenta su tarjeta al comercio', actor: 'cardholder' },
+            { num: 2, title: 'Comercio solicita autorización', desc: 'Envía los datos al adquirente', actor: 'merchant' },
+            { num: 3, title: 'Adquirente enruta a la red', desc: 'La red contacta al banco emisor', actor: 'acquirer' },
+            { num: 4, title: 'Emisor autoriza', desc: 'Valida fondos y retorna respuesta', actor: 'issuer' },
+            { num: 5, title: 'Respuesta al comercio', desc: 'Transacción aprobada o rechazada', actor: 'merchant' }
+        ];
+
+        // ==================== DOM ELEMENTS ====================
+        const actorCards = document.querySelectorAll('.actor-card');
+        const detailContents = document.querySelectorAll('.detail-content');
+        const detailEmpty = document.getElementById('detailEmpty');
+        const playBtn = document.getElementById('playBtn');
+        const playText = document.getElementById('playText');
+        const speedBtn = document.getElementById('speedBtn');
+        const stepBanner = document.getElementById('stepBanner');
+        const stepNum = document.getElementById('stepNum');
+        const stepTitle = document.getElementById('stepTitle');
+        const stepDesc = document.getElementById('stepDesc');
+        const progressFill = document.getElementById('progressFill');
+        const flowBtns = document.querySelectorAll('.flow-btn');
+        const flowPaths = document.querySelectorAll('.flow-path');
+        const flowDots = document.querySelectorAll('.flow-dot');
+
+        // ==================== ACTOR SELECTION ====================
+        function selectActor(actor) {
+            // Update state
+            state.selectedActor = actor;
+
+            // Update cards
+            actorCards.forEach(card => {
+                card.classList.remove('active');
+                if (card.dataset.actor === actor) {
+                    card.classList.add('active');
+                }
+            });
+
+            // Update detail panel
+            detailEmpty.style.display = 'none';
+            detailContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.dataset.detail === actor) {
+                    content.classList.add('active');
+                }
+            });
+        }
+
+        function clearSelection() {
+            state.selectedActor = null;
+            actorCards.forEach(card => card.classList.remove('active'));
+            detailContents.forEach(content => content.classList.remove('active'));
+            detailEmpty.style.display = 'block';
+        }
+
+        actorCards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const actor = card.dataset.actor;
+                if (state.selectedActor === actor) {
+                    clearSelection();
+                } else {
+                    selectActor(actor);
+                }
+            });
+        });
+
+        document.querySelector('.diagram-area').addEventListener('click', (e) => {
+            if (!e.target.closest('.actor-card')) {
+                clearSelection();
+            }
+        });
+
+        // ==================== FLOW ANIMATION ====================
+        function highlightActor(actor) {
+            actorCards.forEach(card => {
+                if (card.dataset.actor === actor) {
+                    card.classList.add('highlight');
+                    card.classList.remove('dim');
+                } else {
+                    card.classList.add('dim');
+                    card.classList.remove('highlight');
+                }
+            });
+        }
+
+        function clearHighlights() {
+            actorCards.forEach(card => {
+                card.classList.remove('highlight', 'dim');
+            });
+        }
+
+        function highlightPath(index) {
+            flowPaths.forEach((path, i) => {
+                if (i === index) {
+                    path.classList.add('highlight');
+                    path.classList.remove('dim');
+                } else {
+                    path.classList.add('dim');
+                    path.classList.remove('highlight');
+                }
+            });
+        }
+
+        function clearPathHighlights() {
+            flowPaths.forEach(path => {
+                path.classList.remove('highlight', 'dim');
+            });
+        }
+
+        function showStepBanner(step) {
+            stepNum.textContent = step.num;
+            stepTitle.textContent = step.title;
+            stepDesc.textContent = step.desc;
+            stepBanner.classList.add('visible');
+        }
+
+        function hideStepBanner() {
+            stepBanner.classList.remove('visible');
+        }
+
+        function updateProgress(percent) {
+            progressFill.style.width = `${percent}%`;
+        }
+
+        async function animateDot(dotIndex) {
+            const dot = document.getElementById(`dot${dotIndex + 1}`);
+            if (!dot) return;
+            
+            dot.classList.add('active');
+            const animateMotion = dot.querySelector('animateMotion');
+            if (animateMotion) {
+                animateMotion.beginElement();
+            }
+            
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    dot.classList.remove('active');
+                    resolve();
+                }, 1500 / state.speed);
+            });
+        }
+
+        async function playAnimation() {
+            if (state.isPlaying) return;
+            
+            state.isPlaying = true;
+            state.currentStep = 0;
+            playBtn.classList.add('playing');
+            playText.textContent = 'Reproduciendo...';
+
+            const totalSteps = stepData.length;
+            const stepDuration = 2000 / state.speed;
+
+            for (let i = 0; i < totalSteps; i++) {
+                if (!state.isPlaying) break;
+
+                const step = stepData[i];
+                state.currentStep = i;
+
+                // Update UI
+                showStepBanner(step);
+                highlightActor(step.actor);
+                
+                if (i < 4) {
+                    highlightPath(i);
+                    await animateDot(i);
+                }
+
+                updateProgress(((i + 1) / totalSteps) * 100);
+
+                // Wait before next step
+                await new Promise(resolve => setTimeout(resolve, stepDuration));
+            }
+
+            // Reset
+            state.isPlaying = false;
+            playBtn.classList.remove('playing');
+            playText.textContent = 'Iniciar Animación';
+            hideStepBanner();
+            clearHighlights();
+            clearPathHighlights();
+            
+            setTimeout(() => updateProgress(0), 500);
+        }
+
+        function stopAnimation() {
+            state.isPlaying = false;
+            playBtn.classList.remove('playing');
+            playText.textContent = 'Iniciar Animación';
+            hideStepBanner();
+            clearHighlights();
+            clearPathHighlights();
+            updateProgress(0);
+        }
+
+        playBtn.addEventListener('click', () => {
+            if (state.isPlaying) {
+                stopAnimation();
+            } else {
+                playAnimation();
+            }
+        });
+
+        // ==================== SPEED CONTROL ====================
+        const speeds = [1, 1.5, 2, 0.5];
+        let speedIndex = 0;
+
+        speedBtn.addEventListener('click', () => {
+            speedIndex = (speedIndex + 1) % speeds.length;
+            state.speed = speeds[speedIndex];
+            speedBtn.textContent = `${state.speed}x`;
+        });
+
+        // ==================== FLOW TYPE TOGGLE ====================
+        flowBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                flowBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                state.activeFlow = btn.dataset.flow;
+                
+                // Could add different path styles here based on flow type
+                // For now, just visual feedback
+            });
+        });
+
+        // ==================== KEYBOARD SHORTCUTS ====================
+        document.addEventListener('keydown', (e) => {
+            if (e.key === ' ' || e.code === 'Space') {
+                e.preventDefault();
+                if (state.isPlaying) {
+                    stopAnimation();
+                } else {
+                    playAnimation();
+                }
+            }
+            if (e.key === 'Escape') {
+                clearSelection();
+                stopAnimation();
+            }
+        });
+
+        // ==================== NAV ITEMS (placeholder) ====================
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+            });
+        });
+
+        // ==================== INITIAL STATE ====================
+        console.log('🟡 MELI 4-Party Model Ready');
+        console.log('Press SPACE to start/stop animation');
+    </script>
+</body>
+</html>
