@@ -17,7 +17,7 @@ const SidebarComponent = {
     render() {
         this.container.innerHTML = `
             ${this.renderAnimationControls()}
-            ${this.renderFeeBreakdown()}
+            ${this.renderFlowSpecificPanel()}
             ${this.renderDetailPanel()}
             ${this.renderFooterTip()}
         `;
@@ -56,23 +56,22 @@ const SidebarComponent = {
         `;
     },
 
-    renderFeeBreakdown() {
+    renderFlowSpecificPanel() {
         const flowId = window.CURRENT_FLOW?.id || 'card-payment';
         
-        // Solo mostrar fees para card-payment
-        if (flowId !== 'card-payment') {
-            return `
-                <div class="panel-section">
-                    <div class="panel-header">
-                        <span class="panel-title">Información</span>
-                    </div>
-                    <div class="detail-text" style="padding: 8px 0;">
-                        ${this.getFlowInfo(flowId)}
-                    </div>
-                </div>
-            `;
+        switch (flowId) {
+            case 'card-payment':
+                return this.renderCardPaymentFees();
+            case 'atm-withdrawal':
+                return this.renderATMFees();
+            case 'transfer':
+                return this.renderTransferInfo();
+            default:
+                return '';
         }
+    },
 
+    renderCardPaymentFees() {
         const fees = getCurrentFees();
         
         return `
@@ -95,12 +94,91 @@ const SidebarComponent = {
         `;
     },
 
-    getFlowInfo(flowId) {
-        const info = {
-            'atm-withdrawal': 'El retiro en cajero puede tener comisiones por uso de ATM ajeno (surcharge) y comisiones interbancarias.',
-            'transfer': 'Las transferencias interbancarias se procesan a través de cámaras de compensación como ACH, SPEI o TEF según el país.'
-        };
-        return info[flowId] || '';
+    renderATMFees() {
+        const atmFees = window.ATM_FEES?.chile || {};
+        
+        return `
+            <div class="panel-section">
+                <div class="panel-header">
+                    <span class="panel-title">Costos ATM (MP Emisor)</span>
+                    <span class="panel-badge">Chile</span>
+                </div>
+                <div class="fee-breakdown">
+                    <div class="fee-row">
+                        <span class="label">
+                            <span class="dot" style="background: var(--color-cardholder)"></span>
+                            Retiro ejemplo
+                        </span>
+                        <span class="value">$50,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="label">
+                            <span class="dot" style="background: var(--color-network)"></span>
+                            Costo trx Redgiro
+                        </span>
+                        <span class="value">0.00068 UF</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="label">
+                            <span class="dot" style="background: var(--color-acquirer)"></span>
+                            Tarifa Interbancaria
+                        </span>
+                        <span class="value">~0.0155 UF</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="label">
+                            <span class="dot" style="background: var(--color-merchant)"></span>
+                            Surcharge (banco ATM)
+                        </span>
+                        <span class="value">$0 - $1,500</span>
+                    </div>
+                    <div class="fee-row total">
+                        <span class="label">Costo aprox MP/trx</span>
+                        <span class="value">~$850</span>
+                    </div>
+                </div>
+                <div class="fee-note">
+                    <p>💡 <strong>Surcharge:</strong> Comisión que el banco dueño del ATM puede cobrar al cliente por usar un cajero "ajeno".</p>
+                </div>
+            </div>
+        `;
+    },
+
+    renderTransferInfo() {
+        return `
+            <div class="panel-section">
+                <div class="panel-header">
+                    <span class="panel-title">Info Transferencia</span>
+                </div>
+                <div class="fee-breakdown">
+                    <div class="fee-row">
+                        <span class="label">
+                            <span class="dot" style="background: var(--color-issuer)"></span>
+                            Monto enviado
+                        </span>
+                        <span class="value">$1,000</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="label">
+                            <span class="dot" style="background: var(--color-network)"></span>
+                            Cámara compensación
+                        </span>
+                        <span class="value">ACH/SPEI/TEF</span>
+                    </div>
+                    <div class="fee-row">
+                        <span class="label">
+                            <span class="dot" style="background: var(--color-acquirer)"></span>
+                            Tiempo acreditación
+                        </span>
+                        <span class="value">Inmediato - 24h</span>
+                    </div>
+                    <div class="fee-row total">
+                        <span class="label">Monto recibido</span>
+                        <span class="value">$1,000</span>
+                    </div>
+                </div>
+            </div>
+        `;
     },
 
     renderDetailPanel() {
@@ -126,7 +204,7 @@ const SidebarComponent = {
         
         const tips = {
             'card-payment': '<strong>💡 Interco:</strong> Cuando MP Operador procesa un pago de una tarjeta MP Emisor, es una transacción "on-us" con fees internos diferenciados.',
-            'atm-withdrawal': '<strong>💡 Tip:</strong> Los retiros en cajeros propios generalmente no tienen comisión. Los retiros en cajeros ajenos pueden tener surcharge.',
+            'atm-withdrawal': '<strong>💡 Not on Us:</strong> Cuando un cliente MP retira en cajero de otro banco, MP Emisor paga tarifas interbancarias. Si retira en cajero propio (on-us), el costo es menor.',
             'transfer': '<strong>💡 Tip:</strong> Las transferencias inmediatas usan sistemas como SPEI (México), Pix (Brasil) o TEF (Chile) para acreditar en segundos.'
         };
 
@@ -138,7 +216,8 @@ const SidebarComponent = {
     },
 
     showActorDetail(actorId) {
-        const actor = ACTORS[actorId];
+        // Usar getActor para obtener el actor correcto según el flujo
+        const actor = window.getActor ? getActor(actorId) : ACTORS[actorId];
         if (!actor) return;
 
         const detailEmpty = document.getElementById('detailEmpty');
@@ -197,7 +276,7 @@ const SidebarComponent = {
     renderActorFees(actor) {
         return `
             <div class="detail-section">
-                <div class="detail-section-title">Fees</div>
+                <div class="detail-section-title">Fees / Costos</div>
                 <div class="detail-list">
                     ${actor.fees.map(fee => `
                         <div class="detail-item">
