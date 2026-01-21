@@ -4,29 +4,14 @@
    ============================================ */
 
 const AnimationController = {
-    // Configuración
     config: {
         stepDuration: 2000,
         dotDuration: 800,
         pauseBetweenSteps: 500
     },
 
-    // Referencias DOM (se llenan en init)
-    elements: {
-        playBtn: null,
-        playIcon: null,
-        playText: null,
-        speedBtn: null,
-        progressFill: null,
-        progressSteps: null,
-        stepBanner: null,
-        flowPaths: null,
-        flowLabels: null,
-        flowDots: null,
-        actorCards: null
-    },
+    elements: {},
 
-    // Inicializar referencias DOM
     init() {
         this.elements = {
             playBtn: document.getElementById('playBtn'),
@@ -50,19 +35,15 @@ const AnimationController = {
         console.log('🎬 AnimationController initialized');
     },
 
-    // Bindear eventos
     bindEvents() {
-        // Play/Pause button
         if (this.elements.playBtn) {
             this.elements.playBtn.addEventListener('click', () => this.togglePlay());
         }
 
-        // Speed button
         if (this.elements.speedBtn) {
             this.elements.speedBtn.addEventListener('click', () => this.cycleSpeed());
         }
 
-        // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (e.code === 'Space') {
                 e.preventDefault();
@@ -74,7 +55,6 @@ const AnimationController = {
         });
     },
 
-    // Toggle play/pause
     togglePlay() {
         if (AppState.isPlaying()) {
             this.stop();
@@ -83,7 +63,6 @@ const AnimationController = {
         }
     },
 
-    // Iniciar animación
     async play() {
         if (AppState.isPlaying()) return;
 
@@ -96,7 +75,8 @@ const AnimationController = {
         this.updatePlayButton(true);
         this.hideAllFlowLabels();
 
-        const steps = FLOW_STEPS.authorization;
+        const flowKey = window.CURRENT_FLOW?.stepsKey || 'authorization';
+        const steps = FLOW_STEPS[flowKey] || [];
         const speed = AppState.getSpeed();
         const stepDuration = this.config.stepDuration / speed;
 
@@ -106,21 +86,16 @@ const AnimationController = {
             const step = steps[i];
             AppState.set('currentStep', i);
 
-            // Actualizar UI
             this.showStepBanner(step);
             this.highlightActor(step.actor);
             this.highlightPath(i);
             this.showFlowLabel(i);
             this.updateProgress(i, steps.length);
 
-            // Animar dot
             await this.animateDot(i);
-
-            // Esperar antes del siguiente paso
             await this.delay(stepDuration);
         }
 
-        // Completar
         if (AppState.isPlaying()) {
             await this.delay(1000);
         }
@@ -128,7 +103,6 @@ const AnimationController = {
         this.stop();
     },
 
-    // Detener animación
     stop() {
         AppState.update({
             isPlaying: false,
@@ -144,7 +118,6 @@ const AnimationController = {
         this.resetProgress();
     },
 
-    // Ciclar velocidad
     cycleSpeed() {
         const speeds = [1, 1.5, 2, 0.5];
         const currentSpeed = AppState.getSpeed();
@@ -159,7 +132,6 @@ const AnimationController = {
         }
     },
 
-    // Actualizar botón de play
     updatePlayButton(isPlaying) {
         if (!this.elements.playBtn) return;
 
@@ -174,7 +146,6 @@ const AnimationController = {
         }
     },
 
-    // Mostrar banner de paso
     showStepBanner(step) {
         const { stepBanner, stepNum, stepTitle, stepDesc, stepAmount, stepAmountLabel } = this.elements;
         
@@ -189,14 +160,12 @@ const AnimationController = {
         stepBanner.classList.add('visible');
     },
 
-    // Ocultar banner de paso
     hideStepBanner() {
         if (this.elements.stepBanner) {
             this.elements.stepBanner.classList.remove('visible');
         }
     },
 
-    // Resaltar actor
     highlightActor(actorId) {
         this.elements.actorCards.forEach(card => {
             if (card.dataset.actor === actorId) {
@@ -209,14 +178,12 @@ const AnimationController = {
         });
     },
 
-    // Limpiar resaltados de actores
     clearHighlights() {
         this.elements.actorCards.forEach(card => {
             card.classList.remove('highlight', 'dim');
         });
     },
 
-    // Resaltar path
     highlightPath(index) {
         this.elements.flowPaths.forEach((path, i) => {
             path.classList.remove('highlight', 'dim', 'completed');
@@ -231,14 +198,12 @@ const AnimationController = {
         });
     },
 
-    // Limpiar resaltados de paths
     clearPathHighlights() {
         this.elements.flowPaths.forEach(path => {
             path.classList.remove('highlight', 'dim', 'completed');
         });
     },
 
-    // Mostrar label de flujo
     showFlowLabel(index) {
         const label = this.elements.flowLabels[index];
         if (label) {
@@ -246,14 +211,12 @@ const AnimationController = {
         }
     },
 
-    // Ocultar todos los labels de flujo
     hideAllFlowLabels() {
         this.elements.flowLabels.forEach(label => {
             label.classList.remove('visible');
         });
     },
 
-    // Actualizar progreso
     updateProgress(stepIndex, totalSteps) {
         const percent = ((stepIndex + 1) / totalSteps) * 100;
         
@@ -272,7 +235,6 @@ const AnimationController = {
         });
     },
 
-    // Resetear progreso
     resetProgress() {
         if (this.elements.progressFill) {
             this.elements.progressFill.style.width = '0%';
@@ -283,7 +245,6 @@ const AnimationController = {
         });
     },
 
-    // Animar dot
     async animateDot(index) {
         const dot = document.getElementById(`dot${index + 1}`);
         if (!dot) return;
@@ -301,11 +262,9 @@ const AnimationController = {
         dot.classList.remove('active');
     },
 
-    // Helper para delay
     delay(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 };
 
-// Exportar para uso global
 window.AnimationController = AnimationController;
