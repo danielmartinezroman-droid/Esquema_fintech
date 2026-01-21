@@ -1,0 +1,230 @@
+/* ============================================
+   Animations & Keyframes
+   ============================================ */
+
+/* Pulse Animation */
+@keyframes pulse {
+    0%, 100% { 
+        transform: scale(1); 
+        opacity: 0.8; 
+    }
+    50% { 
+        transform: scale(1.15); 
+        opacity: 1; 
+    }
+}
+
+.pulse {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+/* Step Pulse */
+@keyframes stepPulse {
+    0%, 100% { 
+        transform: scale(1); 
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2); 
+    }
+    50% { 
+        transform: scale(1.15); 
+        box-shadow: 0 4px 16px rgba(0,0,0,0.3); 
+    }
+}
+
+.step-pulse {
+    animation: stepPulse 1s ease-in-out infinite;
+}
+
+/* Glow Animation */
+@keyframes glow {
+    0%, 100% { 
+        filter: drop-shadow(0 0 4px currentColor); 
+    }
+    50% { 
+        filter: drop-shadow(0 0 12px currentColor); 
+    }
+}
+
+.glow {
+    animation: glow 1.5s ease-in-out infinite;
+}
+
+/* Fade In */
+@keyframes fadeIn {
+    from { 
+        opacity: 0; 
+    }
+    to { 
+        opacity: 1; 
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+/* Fade In Up */
+@keyframes fadeInUp {
+    from { 
+        opacity: 0; 
+        transform: translateY(16px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.fade-in-up {
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+/* Fade In Scale */
+@keyframes fadeInScale {
+    from { 
+        opacity: 0; 
+        transform: scale(0.9); 
+    }
+    to { 
+        opacity: 1; 
+        transform: scale(1); 
+    }
+}
+
+.fade-in-scale {
+    animation: fadeInScale 0.3s ease forwards;
+}
+
+/* Slide In Right */
+@keyframes slideInRight {
+    from { 
+        opacity: 0; 
+        transform: translateX(24px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateX(0); 
+    }
+}
+
+.slide-in-right {
+    animation: slideInRight 0.4s ease forwards;
+}
+
+/* Bounce */
+@keyframes bounce {
+    0%, 100% { 
+        transform: translateY(0); 
+    }
+    50% { 
+        transform: translateY(-8px); 
+    }
+}
+
+.bounce {
+    animation: bounce 0.6s ease;
+}
+
+/* Shake */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-4px); }
+    20%, 40%, 60%, 80% { transform: translateX(4px); }
+}
+
+.shake {
+    animation: shake 0.5s ease;
+}
+
+/* Spin */
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Flow Dot Travel */
+@keyframes flowTravel {
+    0% { 
+        offset-distance: 0%; 
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% { 
+        offset-distance: 100%; 
+        opacity: 0;
+    }
+}
+
+/* Highlight Flash */
+@keyframes highlightFlash {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 var(--meli-yellow-glow); 
+    }
+    50% { 
+        box-shadow: 0 0 0 8px var(--meli-yellow-glow); 
+    }
+}
+
+.highlight-flash {
+    animation: highlightFlash 1s ease-in-out;
+}
+
+/* Progress Grow */
+@keyframes progressGrow {
+    from { 
+        width: 0%; 
+    }
+}
+
+.progress-grow {
+    animation: progressGrow 0.5s ease forwards;
+}
+
+/* Number Count (for JS integration) */
+@keyframes countUp {
+    from { 
+        opacity: 0.5; 
+        transform: translateY(4px); 
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0); 
+    }
+}
+
+.count-up {
+    animation: countUp 0.3s ease;
+}
+
+/* Stagger Children (utility for JS) */
+.stagger-children > * {
+    opacity: 0;
+    animation: fadeInUp 0.4s ease forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.35s; }
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
