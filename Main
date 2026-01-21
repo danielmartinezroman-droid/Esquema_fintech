@@ -41,7 +41,7 @@
       backdrop-filter: blur(10px);
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-Main: 10;
     }
     header h1{
       margin:0;
