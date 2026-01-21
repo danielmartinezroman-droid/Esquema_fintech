@@ -3,36 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo de 4 Partes — Ecosistema de Pagos</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <title>Modelo de 4 Partes — Ecosistema de Pagos | MELI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-card: rgba(255, 255, 255, 0.03);
-            --bg-card-hover: rgba(255, 255, 255, 0.06);
-            --border: rgba(255, 255, 255, 0.08);
-            --border-active: rgba(255, 255, 255, 0.2);
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255, 255, 255, 0.7);
-            --text-muted: rgba(255, 255, 255, 0.5);
+            /* MELI Brand Colors */
+            --meli-yellow: #FFE600;
+            --meli-yellow-dark: #E6CF00;
+            --meli-yellow-light: #FFF176;
+            --meli-yellow-glow: rgba(255, 230, 0, 0.3);
             
-            /* Actor Colors */
-            --cardholder: #3b82f6;
-            --cardholder-glow: rgba(59, 130, 246, 0.3);
-            --merchant: #10b981;
-            --merchant-glow: rgba(16, 185, 129, 0.3);
-            --acquirer: #8b5cf6;
-            --acquirer-glow: rgba(139, 92, 246, 0.3);
-            --issuer: #f59e0b;
-            --issuer-glow: rgba(245, 158, 11, 0.3);
-            --network: #ec4899;
-            --network-glow: rgba(236, 72, 153, 0.3);
+            --meli-dark: #2b2b2b;
+            --meli-gray-900: #333333;
+            --meli-gray-700: #676767;
+            --meli-gray-500: #959595;
+            --meli-gray-300: #C9C9C9;
+            --meli-gray-100: #EBEAEA;
+            --meli-white: #FFFFFF;
+            
+            /* Semantic Colors */
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #F5F5F5;
+            --border: rgba(0, 0, 0, 0.08);
+            --border-active: rgba(0, 0, 0, 0.15);
+            --text-primary: #2b2b2b;
+            --text-secondary: #676767;
+            --text-muted: #959595;
+            
+            /* Actor Colors (MELI-aligned) */
+            --cardholder: #3483FA;
+            --cardholder-light: rgba(52, 131, 250, 0.1);
+            --cardholder-glow: rgba(52, 131, 250, 0.2);
+            
+            --merchant: #00A650;
+            --merchant-light: rgba(0, 166, 80, 0.1);
+            --merchant-glow: rgba(0, 166, 80, 0.2);
+            
+            --acquirer: #8B5CF6;
+            --acquirer-light: rgba(139, 92, 246, 0.1);
+            --acquirer-glow: rgba(139, 92, 246, 0.2);
+            
+            --issuer: #FF6B35;
+            --issuer-light: rgba(255, 107, 53, 0.1);
+            --issuer-glow: rgba(255, 107, 53, 0.2);
+            
+            --network: var(--meli-yellow);
+            --network-dark: var(--meli-dark);
             
             /* Flow Colors */
-            --flow-auth: #60a5fa;
-            --flow-data: #34d399;
-            --flow-money: #fbbf24;
+            --flow-auth: #3483FA;
+            --flow-data: #00A650;
+            --flow-money: var(--meli-yellow);
+            --flow-money-stroke: #E6CF00;
         }
 
         * {
@@ -42,62 +66,37 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Proxima Nova', sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Background Effects */
-        .bg-effects {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .bg-effects::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(ellipse 800px 600px at 20% 20%, rgba(59, 130, 246, 0.08), transparent),
-                radial-gradient(ellipse 600px 400px at 80% 80%, rgba(139, 92, 246, 0.06), transparent),
-                radial-gradient(ellipse 400px 300px at 50% 50%, rgba(16, 185, 129, 0.04), transparent);
-            animation: bgPulse 20s ease-in-out infinite;
-        }
-
-        @keyframes bgPulse {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(-2%, -2%) scale(1.05); }
-        }
-
-        .grid-overlay {
+        /* Subtle Background Pattern */
+        .bg-pattern {
             position: fixed;
             inset: 0;
             background-image: 
-                linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
+                radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0);
+            background-size: 32px 32px;
             pointer-events: none;
             z-index: 0;
         }
 
         /* Header */
         header {
-            position: relative;
-            z-index: 10;
-            padding: 24px 40px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--meli-white);
             border-bottom: 1px solid var(--border);
-            background: rgba(10, 10, 15, 0.8);
-            backdrop-filter: blur(20px);
+            padding: 0 32px;
+            height: 64px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
         }
 
         .logo-section {
@@ -109,57 +108,113 @@
         .logo-icon {
             width: 40px;
             height: 40px;
-            background: linear-gradient(135deg, var(--cardholder), var(--acquirer));
-            border-radius: 10px;
+            background: var(--meli-yellow);
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
+            box-shadow: 0 2px 8px var(--meli-yellow-glow);
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
         }
 
         .logo-text h1 {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            letter-spacing: -0.5px;
+            color: var(--meli-dark);
+            letter-spacing: -0.3px;
         }
 
-        .logo-text p {
+        .logo-text span {
             font-size: 12px;
             color: var(--text-muted);
-            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-item:hover {
+            background: var(--bg-card-hover);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: var(--meli-yellow);
+            color: var(--meli-dark);
+            font-weight: 600;
         }
 
         .header-actions {
             display: flex;
+            align-items: center;
             gap: 12px;
         }
 
         .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             padding: 10px 20px;
-            border-radius: 8px;
+            border-radius: 24px;
             font-size: 13px;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
             border: 1px solid var(--border);
-            background: var(--bg-card);
+            background: var(--meli-white);
             color: var(--text-primary);
         }
 
         .btn:hover {
-            background: var(--bg-card-hover);
             border-color: var(--border-active);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--cardholder), var(--acquirer));
-            border: none;
+            background: var(--meli-yellow);
+            border-color: var(--meli-yellow);
+            color: var(--meli-dark);
         }
 
         .btn-primary:hover {
+            background: var(--meli-yellow-dark);
+            border-color: var(--meli-yellow-dark);
+            box-shadow: 0 4px 16px var(--meli-yellow-glow);
             transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);
+        }
+
+        .btn-icon {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* Main Layout */
@@ -167,987 +222,60 @@
             position: relative;
             
             display: grid;
-            grid-template-columns: 1fr 400px;
-            height: calc(100vh - 89px);
+            grid-template-columns: 1fr 420px;
+            min-height: calc(100vh - 64px);
         }
 
         /* Diagram Area */
         .diagram-area {
             position: relative;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             padding: 40px;
+            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--meli-white) 100%);
         }
 
         .diagram-wrapper {
             position: relative;
             width: 100%;
-            max-width: 700px;
+            max-width: 680px;
             aspect-ratio: 1;
         }
 
-        /* Center Label */
-        .center-label {
+        /* Center Title */
+        .center-title {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
             z-index: 5;
+            pointer-events: none;
         }
 
-        .center-label h2 {
-            font-size: 14px;
+        .center-title .subtitle {
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 8px;
+            letter-spacing: 3px;
+            margin-bottom: 4px;
         }
 
-        .center-label .big-number {
-            font-size: 72px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--cardholder), var(--merchant), var(--acquirer), var(--issuer));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .center-title .main-number {
+            font-size: 96px;
+            font-weight: 900;
+            color: var(--meli-dark);
             line-height: 1;
+            position: relative;
         }
 
-        .center-label p {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        /* Actor Cards */
-        .actor-card {
-            position: absolute;
-            width: 160px;
-            padding: 20px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
-        }
-
-        .actor-card::before {
+        .center-title .main-number::after {
             content: '';
             position: absolute;
-            inset: -1px;
-            border-radius: 16px;
-            padding: 1px;
-            background: linear-gradient(135deg, transparent, transparent);
-            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .actor-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-active);
-        }
-
-        .actor-card:hover::before {
-            opacity: 1;
-        }
-
-        .actor-card.active {
-            transform: translateY(-4px);
-            border-color: var(--border-active);
-        }
-
-        /* Positioning */
-        .actor-card[data-actor="cardholder"] {
-            top: 0;
+            bottom: 8px;
             left: 50%;
             transform: translateX(-50%);
-        }
-        .actor-card[data-actor="cardholder"]:hover,
-        .actor-card[data-actor="cardholder"].active {
-            transform: translateX(-50%) translateY(-4px);
-        }
-        .actor-card[data-actor="cardholder"]::before {
-            background: linear-gradient(135deg, var(--cardholder), transparent);
-        }
-
-        .actor-card[data-actor="merchant"] {
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%);
-        }
-        .actor-card[data-actor="merchant"]:hover,
-        .actor-card[data-actor="merchant"].active {
-            transform: translateY(-50%) translateX(4px);
-        }
-        .actor-card[data-actor="merchant"]::before {
-            background: linear-gradient(135deg, var(--merchant), transparent);
-        }
-
-        .actor-card[data-actor="acquirer"] {
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .actor-card[data-actor="acquirer"]:hover,
-        .actor-card[data-actor="acquirer"].active {
-            transform: translateX(-50%) translateY(4px);
-        }
-        .actor-card[data-actor="acquirer"]::before {
-            background: linear-gradient(135deg, var(--acquirer), transparent);
-        }
-
-        .actor-card[data-actor="issuer"] {
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-        }
-        .actor-card[data-actor="issuer"]:hover,
-        .actor-card[data-actor="issuer"].active {
-            transform: translateY(-50%) translateX(-4px);
-        }
-        .actor-card[data-actor="issuer"]::before {
-            background: linear-gradient(135deg, var(--issuer), transparent);
-        }
-
-        .actor-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 12px;
-            font-size: 24px;
-        }
-
-        .actor-card[data-actor="cardholder"] .actor-icon {
-            background: linear-gradient(135deg, var(--cardholder), rgba(59, 130, 246, 0.5));
-            box-shadow: 0 4px 20px var(--cardholder-glow);
-        }
-
-        .actor-card[data-actor="merchant"] .actor-icon {
-            background: linear-gradient(135deg, var(--merchant), rgba(16, 185, 129, 0.5));
-            box-shadow: 0 4px 20px var(--merchant-glow);
-        }
-
-        .actor-card[data-actor="acquirer"] .actor-icon {
-            background: linear-gradient(135deg, var(--acquirer), rgba(139, 92, 246, 0.5));
-            box-shadow: 0 4px 20px var(--acquirer-glow);
-        }
-
-        .actor-card[data-actor="issuer"] .actor-icon {
-            background: linear-gradient(135deg, var(--issuer), rgba(245, 158, 11, 0.5));
-            box-shadow: 0 4px 20px var(--issuer-glow);
-        }
-
-        .actor-step {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            border: 2px solid;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: 700;
-        }
-
-        .actor-card[data-actor="cardholder"] .actor-step { border-color: var(--cardholder); color: var(--cardholder); }
-        .actor-card[data-actor="merchant"] .actor-step { border-color: var(--merchant); color: var(--merchant); }
-        .actor-card[data-actor="acquirer"] .actor-step { border-color: var(--acquirer); color: var(--acquirer); }
-        .actor-card[data-actor="issuer"] .actor-step { border-color: var(--issuer); color: var(--issuer); }
-
-        .actor-name {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .actor-desc {
-            font-size: 11px;
-            color: var(--text-muted);
-            line-height: 1.4;
-        }
-
-        /* SVG Connections */
-        .connections-svg {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .flow-path {
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            opacity: 0.6;
-            transition: opacity 0.3s ease;
-        }
-
-        .flow-path.auth { stroke: var(--flow-auth); }
-        .flow-path.data { stroke: var(--flow-data); stroke-dasharray: 8 4; }
-        .flow-path.money { stroke: var(--flow-money); stroke-dasharray: 4 4; }
-
-        .flow-arrow {
-            fill: var(--flow-auth);
-        }
-
-        .flow-label {
-            font-size: 10px;
-            fill: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Network Badge (Center) */
-        .network-badge {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) translateY(60px);
-            display: flex;
-            gap: 8px;
-            z-index: 6;
-        }
-
-        .brand-chip {
-            padding: 6px 12px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 500;
-            color: var(--text-secondary);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .brand-chip img {
-            height: 14px;
-            opacity: 0.8;
-        }
-
-        /* Sidebar Panel */
-        .sidebar {
-            border-left: 1px solid var(--border);
-            background: rgba(18, 18, 26, 0.6);
-            backdrop-filter: blur(20px);
-            padding: 24px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .panel-section {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 20px;
-        }
-
-        .panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 16px;
-        }
-
-        .panel-title {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .panel-badge {
-            padding: 4px 10px;
-            background: rgba(59, 130, 246, 0.1);
-            border: 1px solid rgba(59, 130, 246, 0.2);
-            border-radius: 20px;
-            font-size: 11px;
-            color: var(--cardholder);
-        }
-
-        /* Detail Panel */
-        .detail-panel {
-            flex: 1;
-        }
-
-        .detail-empty {
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .detail-empty-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 16px;
-            background: var(--bg-card);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            opacity: 0.5;
-        }
-
-        .detail-empty h3 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .detail-empty p {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.5;
-        }
-
-        .detail-content {
-            display: none;
-        }
-
-        .detail-content.active {
-            display: block;
-        }
-
-        .detail-header {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            margin-bottom: 20px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .detail-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-        }
-
-        .detail-info h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 4px;
-        }
-
-        .detail-info p {
-            font-size: 13px;
-            color: var(--text-muted);
-        }
-
-        .detail-section {
-            margin-bottom: 20px;
-        }
-
-        .detail-section-title {
-            font-size: 11px;
-            font-weight: 600;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 12px;
-        }
-
-        .detail-list {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .detail-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.02);
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .detail-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .detail-item-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        .detail-item-text h4 {
-            font-size: 13px;
-            font-weight: 500;
-            margin-bottom: 2px;
-        }
-
-        .detail-item-text p {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .detail-item-arrow {
-            margin-left: auto;
-            color: var(--text-muted);
-            font-size: 12px;
-        }
-
-        /* Legend */
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .legend-line {
-            width: 24px;
-            height: 2px;
-            border-radius: 1px;
-        }
-
-        .legend-line.auth { background: var(--flow-auth); }
-        .legend-line.data { 
-            background: repeating-linear-gradient(90deg, var(--flow-data), var(--flow-data) 6px, transparent 6px, transparent 10px);
-        }
-        .legend-line.money { 
-            background: repeating-linear-gradient(90deg, var(--flow-money), var(--flow-money) 3px, transparent 3px, transparent 6px);
-        }
-
-        /* Flow Animation Toggle */
-        .flow-toggle {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .flow-chip {
-            padding: 8px 14px;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .flow-chip:hover {
-            border-color: var(--border-active);
-        }
-
-        .flow-chip.active {
-            background: rgba(59, 130, 246, 0.1);
-            border-color: var(--cardholder);
-        }
-
-        .flow-chip-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-        }
-
-        /* Responsive */
-        @media (max-width: 1100px) {
-            .main-container {
-                grid-template-columns: 1fr;
-                grid-template-rows: 1fr auto;
-            }
-
-            .sidebar {
-                border-left: none;
-                border-top: 1px solid var(--border);
-                max-height: 50vh;
-            }
-
-            .diagram-wrapper {
-                max-width: 500px;
-            }
-        }
-
-        @media (max-width: 600px) {
-            header {
-                padding: 16px 20px;
-                flex-direction: column;
-                gap: 16px;
-            }
-
-            .diagram-area {
-                padding: 20px;
-            }
-
-            .actor-card {
-                width: 120px;
-                padding: 14px;
-            }
-
-            .actor-icon {
-                width: 36px;
-                height: 36px;
-                font-size: 18px;
-            }
-
-            .actor-name {
-                font-size: 12px;
-            }
-
-            .actor-desc {
-                display: none;
-            }
-
-            .center-label .big-number {
-                font-size: 48px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="bg-effects"></div>
-    <div class="grid-overlay"></div>
-
-    <header>
-        <div class="logo-section">
-            <div class="logo-icon">4P</div>
-            <div class="logo-text">
-                <h1>Modelo de 4 Partes</h1>
-                <p>Ecosistema de Pagos con Tarjeta</p>
-            </div>
-        </div>
-        <div class="header-actions">
-            <button class="btn" id="resetView">Reset Vista</button>
-            <button class="btn btn-primary" id="playFlow">▶ Simular Flujo</button>
-        </div>
-    </header>
-
-    <main class="main-container">
-        <div class="diagram-area">
-            <div class="diagram-wrapper">
-                <!-- SVG Connections -->
-                <svg class="connections-svg" viewBox="0 0 700 700">
-                    <defs>
-                        <marker id="arrowAuth" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                            <path d="M0,0 L0,6 L9,3 z" fill="var(--flow-auth)" />
-                        </marker>
-                        <marker id="arrowData" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                            <path d="M0,0 L0,6 L9,3 z" fill="var(--flow-data)" />
-                        </marker>
-                        <marker id="arrowMoney" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                            <path d="M0,0 L0,6 L9,3 z" fill="var(--flow-money)" />
-                        </marker>
-                    </defs>
-
-                    <!-- Cardholder → Merchant (Pago) -->
-                    <path class="flow-path auth" d="M350,100 Q500,100 540,280" marker-end="url(#arrowAuth)" />
-                    <text class="flow-label" x="450" y="150">① Paga</text>
-
-                    <!-- Merchant → Acquirer (Request) -->
-                    <path class="flow-path auth" d="M540,380 Q500,550 350,600" marker-end="url(#arrowAuth)" />
-                    <text class="flow-label" x="480" y="520">② Solicitud</text>
-
-                    <!-- Acquirer → Issuer (Via Network) -->
-                    <path class="flow-path data" d="M260,600 Q100,550 100,350" marker-end="url(#arrowData)" />
-                    <text class="flow-label" x="120" y="500">③ Auth Request</text>
-
-                    <!-- Issuer → Cardholder (Autoriza) -->
-                    <path class="flow-path auth" d="M160,280 Q200,100 350,100" marker-end="url(#arrowAuth)" />
-                    <text class="flow-label" x="200" y="150">④ Respuesta</text>
-
-                    <!-- Settlement (conceptual) -->
-                    <path class="flow-path money" d="M160,380 Q350,450 540,380" marker-end="url(#arrowMoney)" style="opacity: 0.4" />
-                </svg>
-
-                <!-- Center Label -->
-                <div class="center-label">
-                    <h2>Modelo de</h2>
-                    <div class="big-number">4</div>
-                    <p>Partes</p>
-                </div>
-
-                <!-- Network Brands -->
-                <div class="network-badge">
-                    <div class="brand-chip">
-                        <span>💳</span> Visa
-                    </div>
-                    <div class="brand-chip">
-                        <span>💳</span> Mastercard
-                    </div>
-                    <div class="brand-chip">
-                        <span>💳</span> Amex
-                    </div>
-                </div>
-
-                <!-- Actor Cards -->
-                <div class="actor-card" data-actor="cardholder">
-                    <span class="actor-step">1</span>
-                    <div class="actor-icon">👤</div>
-                    <div class="actor-name">Tarjetahabiente</div>
-                    <div class="actor-desc">Cliente que paga con tarjeta</div>
-                </div>
-
-                <div class="actor-card" data-actor="merchant">
-                    <span class="actor-step">2</span>
-                    <div class="actor-icon">🏪</div>
-                    <div class="actor-name">Comercio</div>
-                    <div class="actor-desc">Acepta el pago</div>
-                </div>
-
-                <div class="actor-card" data-actor="acquirer">
-                    <span class="actor-step">3</span>
-                    <div class="actor-icon">🏦</div>
-                    <div class="actor-name">Adquirente</div>
-                    <div class="actor-desc">Procesa para el comercio</div>
-                </div>
-
-                <div class="actor-card" data-actor="issuer">
-                    <span class="actor-step">4</span>
-                    <div class="actor-icon">🏛️</div>
-                    <div class="actor-name">Banco Emisor</div>
-                    <div class="actor-desc">Emite tarjeta y autoriza</div>
-                </div>
-            </div>
-        </div>
-
-        <aside class="sidebar">
-            <!-- Flow Controls -->
-            <div class="panel-section">
-                <div class="panel-header">
-                    <span class="panel-title">Flujos</span>
-                    <span class="panel-badge">Interactivo</span>
-                </div>
-                <div class="flow-toggle">
-                    <div class="flow-chip active" data-flow="auth">
-                        <span class="flow-chip-dot" style="background: var(--flow-auth)"></span>
-                        Autorización
-                    </div>
-                    <div class="flow-chip" data-flow="clearing">
-                        <span class="flow-chip-dot" style="background: var(--flow-data)"></span>
-                        Clearing
-                    </div>
-                    <div class="flow-chip" data-flow="settlement">
-                        <span class="flow-chip-dot" style="background: var(--flow-money)"></span>
-                        Settlement
-                    </div>
-                </div>
-            </div>
-
-            <!-- Legend -->
-            <div class="panel-section">
-                <div class="panel-header">
-                    <span class="panel-title">Leyenda</span>
-                </div>
-                <div class="legend">
-                    <div class="legend-item">
-                        <span class="legend-line auth"></span>
-                        Auth Request/Response
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-line data"></span>
-                        Data / Clearing
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-line money"></span>
-                        Fondos / Settlement
-                    </div>
-                </div>
-            </div>
-
-            <!-- Detail Panel -->
-            <div class="panel-section detail-panel">
-                <div class="panel-header">
-                    <span class="panel-title">Detalle</span>
-                </div>
-                
-                <div class="detail-empty" id="detailEmpty">
-                    <div class="detail-empty-icon">👆</div>
-                    <h3>Selecciona un actor</h3>
-                    <p>Haz clic en cualquier actor del diagrama para ver su información detallada y funciones.</p>
-                </div>
-
-                <!-- Cardholder Detail -->
-                <div class="detail-content" data-detail="cardholder">
-                    <div class="detail-header">
-                        <div class="detail-icon" style="background: linear-gradient(135deg, var(--cardholder), rgba(59, 130, 246, 0.5));">👤</div>
-                        <div class="detail-info">
-                            <h3>Tarjetahabiente</h3>
-                            <p>Cliente final que paga</p>
-                        </div>
-                    </div>
-                    <div class="detail-section">
-                        <div class="detail-section-title">Descripción</div>
-                        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-                            Persona o entidad que posee una tarjeta de crédito o débito emitida por un banco emisor. Inicia la transacción al presentar sus credenciales para pagar.
-                        </p>
-                    </div>
-                    <div class="detail-section">
-                        <div class="detail-section-title">Acciones en el flujo</div>
-                        <div class="detail-list">
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(59, 130, 246, 0.1);">💳</div>
-                                <div class="detail-item-text">
-                                    <h4>Presenta credenciales</h4>
-                                    <p>PAN, CVV, fecha exp. o token</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(59, 130, 246, 0.1);">🔐</div>
-                                <div class="detail-item-text">
-                                    <h4>Autentica (si aplica)</h4>
-                                    <p>3DS, PIN, biometría</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(59, 130, 246, 0.1);">✅</div>
-                                <div class="detail-item-text">
-                                    <h4>Recibe confirmación</h4>
-                                    <p>Aprobado o rechazado</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Merchant Detail -->
-                <div class="detail-content" data-detail="merchant">
-                    <div class="detail-header">
-                        <div class="detail-icon" style="background: linear-gradient(135deg, var(--merchant), rgba(16, 185, 129, 0.5));">🏪</div>
-                        <div class="detail-info">
-                            <h3>Comercio</h3>
-                            <p>Punto de venta / E-commerce</p>
-                        </div>
-                    </div>
-                    <div class="detail-section">
-                        <div class="detail-section-title">Descripción</div>
-                        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-                            Negocio que acepta pagos con tarjeta. Tiene un contrato con un adquirente y utiliza un terminal POS o integración para procesar transacciones.
-                        </p>
-                    </div>
-                    <div class="detail-section">
-                        <div class="detail-section-title">Acciones en el flujo</div>
-                        <div class="detail-list">
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(16, 185, 129, 0.1);">📡</div>
-                                <div class="detail-item-text">
-                                    <h4>Captura datos de tarjeta</h4>
-                                    <p>POS, chip, contactless, online</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(16, 185, 129, 0.1);">📤</div>
-                                <div class="detail-item-text">
-                                    <h4>Envía al adquirente</h4>
-                                    <p>Solicitud de autorización</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(16, 185, 129, 0.1);">💵</div>
-                                <div class="detail-item-text">
-                                    <h4>Recibe liquidación</h4>
-                                    <p>Fondos menos comisiones (MDR)</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Acquirer Detail -->
-                <div class="detail-content" data-detail="acquirer">
-                    <div class="detail-header">
-                        <div class="detail-icon" style="background: linear-gradient(135deg, var(--acquirer), rgba(139, 92, 246, 0.5));">🏦</div>
-                        <div class="detail-info">
-                            <h3>Adquirente</h3>
-                            <p>Procesador del comercio</p>
-                        </div>
-                    </div>
-                    <div class="detail-section">
-                        <div class="detail-section-title">Descripción</div>
-                        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-                            Entidad financiera o procesadora que tiene contrato con el comercio. Enruta transacciones hacia las redes de pago y liquida fondos al comercio.
-                        </p>
-                    </div>
-                    <div class="detail-section">
-                        <div class="detail-section-title">Acciones en el flujo</div>
-                        <div class="detail-list">
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(139, 92, 246, 0.1);">🔀</div>
-                                <div class="detail-item-text">
-                                    <h4>Enruta a la red</h4>
-                                    <p>Visa, MC, Amex según BIN</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(139, 92, 246, 0.1);">📊</div>
-                                <div class="detail-item-text">
-                                    <h4>Gestiona clearing</h4>
-                                    <p>Batch de transacciones</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(139, 92, 246, 0.1);">💰</div>
-                                <div class="detail-item-text">
-                                    <h4>Cobra MDR</h4>
-                                    <p>Merchant Discount Rate</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Issuer Detail -->
-                <div class="detail-content" data-detail="issuer">
-                    <div class="detail-header">
-                        <div class="detail-icon" style="background: linear-gradient(135deg, var(--issuer), rgba(245, 158, 11, 0.5));">🏛️</div>
-                        <div class="detail-info">
-                            <h3>Banco Emisor</h3>
-                            <p>Emite tarjetas a clientes</p>
-                        </div>
-                    </div>
-                    <div class="detail-section">
-                        <div class="detail-section-title">Descripción</div>
-                        <p style="font-size: 13px; color: var(--text-secondary); line-height: 1.6;">
-                            Banco o institución que emite tarjetas a los tarjetahabientes. Autoriza o declina transacciones y cobra al cliente. Recibe el interchange fee.
-                        </p>
-                    </div>
-                    <div class="detail-section">
-                        <div class="detail-section-title">Acciones en el flujo</div>
-                        <div class="detail-list">
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(245, 158, 11, 0.1);">🔍</div>
-                                <div class="detail-item-text">
-                                    <h4>Valida y autoriza</h4>
-                                    <p>Fondos, fraude, límites</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(245, 158, 11, 0.1);">📝</div>
-                                <div class="detail-item-text">
-                                    <h4>Registra movimiento</h4>
-                                    <p>En cuenta del cliente</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                            <div class="detail-item">
-                                <div class="detail-item-icon" style="background: rgba(245, 158, 11, 0.1);">🔄</div>
-                                <div class="detail-item-text">
-                                    <h4>Recibe interchange</h4>
-                                    <p>Fee del adquirente</p>
-                                </div>
-                                <span class="detail-item-arrow">→</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </aside>
-    </main>
-
-    <script>
-        // Actor Selection
-        const actorCards = document.querySelectorAll('.actor-card');
-        const detailContents = document.querySelectorAll('.detail-content');
-        const detailEmpty = document.getElementById('detailEmpty');
-
-        actorCards.forEach(card => {
-            card.addEventListener('click', () => {
-                // Remove active from all cards
-                actorCards.forEach(c => c.classList.remove('active'));
-                // Add active to clicked card
-                card.classList.add('active');
-
-                // Show corresponding detail
-                const actor = card.dataset.actor;
-                detailEmpty.style.display = 'none';
-                detailContents.forEach(content => {
-                    content.classList.remove('active');
-                    if (content.dataset.detail === actor) {
-                        content.classList.add('active');
-                    }
-                });
-            });
-        });
-
-        // Reset View
-        document.getElementById('resetView').addEventListener('click', () => {
-            actorCards.forEach(c => c.classList.remove('active'));
-            detailContents.forEach(c => c.classList.remove('active'));
-            detailEmpty.style.display = 'block';
-        });
-
-        // Flow Toggle
-        const flowChips = document.querySelectorAll('.flow-chip');
-        flowChips.forEach(chip => {
-            chip.addEventListener('click', () => {
-                chip.classList.toggle('active');
-                // Here you would toggle visibility of corresponding flow paths
-            });
-        });
-
-        // Play Flow Animation (placeholder)
-        document.getElementById('playFlow').addEventListener('click', () => {
-            const paths = document.querySelectorAll('.flow-path');
-            paths.forEach((path, index) => {
-                path.style.opacity = '0';
-                setTimeout(() => {
-                    path.style.transition = 'opacity 0.5s ease';
-                    path.style.opacity = '0.8';
-                }, index * 500);
-            });
-        });
-
-        // Click outside to deselect
-        document.querySelector('.diagram-area').addEventListener('click', (e) => {
-            if (e.target.closest('.actor-card')) return;
-            actorCards.forEach(c => c.classList.remove('active'));
-            detailContents.forEach(c => c.classList.remove('active'));
-            detailEmpty.style.display = 'block';
-        });
-    </script>
-</body>
-</html>
+            width: 60px;
