@@ -160,6 +160,13 @@ const DiagramComponent = {
                </div>` 
             : '';
 
+        // NUEVO: Highlight badge para interchange
+        const highlightBadgeHTML = actor.highlightBadge
+            ? `<div class="highlight-badge" style="background: ${actor.highlightBadge.color}">
+                    ${actor.highlightBadge.text}
+               </div>`
+            : '';
+
         return `
             <div class="actor-card" data-actor="${actor.id}">
                 ${badgeHTML}
@@ -171,6 +178,7 @@ const DiagramComponent = {
                     </div>
                 </div>
                 ${brandsHTML}
+                ${highlightBadgeHTML}
             </div>
         `;
     },
