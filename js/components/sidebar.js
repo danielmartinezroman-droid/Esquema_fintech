@@ -4,10 +4,8 @@
    ============================================ */
 
 const SidebarComponent = {
-    // Contenedor
     container: null,
 
-    // Inicializar
     init() {
         this.container = document.getElementById('sidebar');
         if (this.container) {
@@ -16,7 +14,6 @@ const SidebarComponent = {
         console.log('📋 SidebarComponent initialized');
     },
 
-    // Renderizar sidebar completo
     render() {
         this.container.innerHTML = `
             ${this.renderAnimationControls()}
@@ -26,9 +23,9 @@ const SidebarComponent = {
         `;
     },
 
-    // Renderizar controles de animación
     renderAnimationControls() {
-        const steps = FLOW_STEPS.authorization;
+        const flowKey = window.CURRENT_FLOW?.stepsKey || 'authorization';
+        const steps = FLOW_STEPS[flowKey] || [];
         
         return `
             <div class="panel-section">
@@ -59,8 +56,23 @@ const SidebarComponent = {
         `;
     },
 
-    // Renderizar desglose de fees
     renderFeeBreakdown() {
+        const flowId = window.CURRENT_FLOW?.id || 'card-payment';
+        
+        // Solo mostrar fees para card-payment
+        if (flowId !== 'card-payment') {
+            return `
+                <div class="panel-section">
+                    <div class="panel-header">
+                        <span class="panel-title">Información</span>
+                    </div>
+                    <div class="detail-text" style="padding: 8px 0;">
+                        ${this.getFlowInfo(flowId)}
+                    </div>
+                </div>
+            `;
+        }
+
         const fees = getCurrentFees();
         
         return `
@@ -83,7 +95,14 @@ const SidebarComponent = {
         `;
     },
 
-    // Renderizar panel de detalles
+    getFlowInfo(flowId) {
+        const info = {
+            'atm-withdrawal': 'El retiro en cajero puede tener comisiones por uso de ATM ajeno (surcharge) y comisiones interbancarias.',
+            'transfer': 'Las transferencias interbancarias se procesan a través de cámaras de compensación como ACH, SPEI o TEF según el país.'
+        };
+        return info[flowId] || '';
+    },
+
     renderDetailPanel() {
         return `
             <div class="panel-section detail-panel">
@@ -102,19 +121,22 @@ const SidebarComponent = {
         `;
     },
 
-    // Renderizar footer tip
     renderFooterTip() {
+        const flowId = window.CURRENT_FLOW?.id || 'card-payment';
+        
+        const tips = {
+            'card-payment': '<strong>💡 Interco:</strong> Cuando MP Operador procesa un pago de una tarjeta MP Emisor, es una transacción "on-us" con fees internos diferenciados.',
+            'atm-withdrawal': '<strong>💡 Tip:</strong> Los retiros en cajeros propios generalmente no tienen comisión. Los retiros en cajeros ajenos pueden tener surcharge.',
+            'transfer': '<strong>💡 Tip:</strong> Las transferencias inmediatas usan sistemas como SPEI (México), Pix (Brasil) o TEF (Chile) para acreditar en segundos.'
+        };
+
         return `
             <div class="footer-tip">
-                <p>
-                    <strong>💡 Interco:</strong> Cuando MP Operador procesa un pago de una tarjeta MP Emisor, 
-                    es una transacción "on-us" con fees internos diferenciados.
-                </p>
+                <p>${tips[flowId] || ''}</p>
             </div>
         `;
     },
 
-    // Mostrar detalle de actor
     showActorDetail(actorId) {
         const actor = ACTORS[actorId];
         if (!actor) return;
@@ -130,7 +152,6 @@ const SidebarComponent = {
         }
     },
 
-    // Renderizar detalle de actor
     renderActorDetail(actor) {
         return `
             <div class="detail-content active">
@@ -173,7 +194,6 @@ const SidebarComponent = {
         `;
     },
 
-    // Renderizar fees del actor
     renderActorFees(actor) {
         return `
             <div class="detail-section">
@@ -195,7 +215,6 @@ const SidebarComponent = {
         `;
     },
 
-    // Renderizar métricas del actor
     renderActorMetrics(actor) {
         return `
             <div class="detail-section">
@@ -217,7 +236,6 @@ const SidebarComponent = {
         `;
     },
 
-    // Renderizar indicador de Interco
     renderIntercoIndicator() {
         return `
             <div class="interco-indicator">
@@ -230,7 +248,6 @@ const SidebarComponent = {
         `;
     },
 
-    // Mostrar estado vacío
     showEmptyState() {
         const detailEmpty = document.getElementById('detailEmpty');
         const detailContent = document.getElementById('detailContent');
@@ -240,25 +257,7 @@ const SidebarComponent = {
             detailContent.innerHTML = '';
             detailContent.classList.remove('active');
         }
-    },
-
-    // Actualizar fees (cuando cambia el país)
-    updateFees() {
-        const feesContainer = this.container.querySelector('.fee-breakdown');
-        if (feesContainer) {
-            const fees = getCurrentFees();
-            feesContainer.innerHTML = fees.breakdown.map(fee => `
-                <div class="fee-row ${fee.isTotal ? 'total' : ''}">
-                    <span class="label">
-                        ${fee.color ? `<span class="dot" style="background: var(--color-${fee.color})"></span>` : ''}
-                        ${fee.label}
-                    </span>
-                    <span class="value">${fee.value}</span>
-                </div>
-            `).join('');
-        }
     }
 };
 
-// Exportar para uso global
 window.SidebarComponent = SidebarComponent;
