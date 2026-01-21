@@ -1,0 +1,282 @@
+/* ============================================
+   Actor Cards Styles
+   ============================================ */
+
+/* Diagram Area */
+.diagram-area {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-xl);
+}
+
+.diagram-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    aspect-ratio: 1.15;
+}
+
+/* Actor Card Base */
+.actor-card {
+    position: absolute;
+    padding: 16px 20px;
+    background: var(--meli-white);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-lg);
+    cursor: pointer;
+    transition: var(--transition-bounce);
+    box-shadow: var(--shadow-sm);
+    z-index: var(--z-base);
+    min-width: 160px;
+}
+
+.actor-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+}
+
+.actor-card.active {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--meli-yellow);
+}
+
+.actor-card.highlight {
+    z-index: var(--z-dropdown);
+    transform: scale(1.05);
+    box-shadow: var(--shadow-xl);
+}
+
+.actor-card.dim {
+    opacity: 0.35;
+    transform: scale(0.97);
+}
+
+.actor-card.mp-highlight {
+    border-color: var(--meli-yellow);
+    box-shadow: 0 0 0 4px var(--meli-yellow-glow), var(--shadow-lg);
+}
+
+/* Actor Positions */
+.actor-card[data-actor="cardholder"] {
+    top: 0;
+    left: 8%;
+}
+
+.actor-card[data-actor="merchant"] {
+    top: 0;
+    right: 8%;
+}
+
+.actor-card[data-actor="acquirer"] {
+    bottom: 8%;
+    right: 5%;
+}
+
+.actor-card[data-actor="issuer"] {
+    bottom: 8%;
+    left: 5%;
+}
+
+.actor-card[data-actor="network"] {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 180px;
+    text-align: center;
+    border-color: var(--color-network);
+    border-width: 2px;
+}
+
+/* Network special transforms */
+.actor-card[data-actor="network"]:hover {
+    transform: translate(-50%, -50%) scale(1.03);
+}
+
+.actor-card[data-actor="network"].highlight {
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+.actor-card[data-actor="network"].dim {
+    transform: translate(-50%, -50%) scale(0.97);
+}
+
+/* Actor Header */
+.actor-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.actor-card[data-actor="network"] .actor-header {
+    flex-direction: column;
+    text-align: center;
+}
+
+/* Actor Icon */
+.actor-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    flex-shrink: 0;
+    transition: transform var(--transition-base);
+}
+
+.actor-card:hover .actor-icon {
+    transform: scale(1.1);
+}
+
+/* Actor Icon Colors */
+.actor-card[data-actor="cardholder"] .actor-icon { 
+    background: var(--color-cardholder-light); 
+}
+
+.actor-card[data-actor="merchant"] .actor-icon { 
+    background: var(--color-merchant-light); 
+}
+
+.actor-card[data-actor="acquirer"] .actor-icon { 
+    background: var(--color-acquirer-light); 
+}
+
+.actor-card[data-actor="network"] .actor-icon { 
+    background: var(--color-network-light); 
+}
+
+.actor-card[data-actor="issuer"] .actor-icon { 
+    background: var(--color-issuer-light); 
+}
+
+/* Actor Info */
+.actor-info h3 {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.actor-info p {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.3;
+}
+
+.actor-card[data-actor="network"] .actor-info h3 {
+    font-size: 15px;
+}
+
+/* MP Badge */
+.mp-badge {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    padding: 4px 10px;
+    background: var(--meli-yellow);
+    color: var(--meli-dark);
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: var(--radius-full);
+    box-shadow: 0 2px 8px var(--meli-yellow-glow);
+    white-space: nowrap;
+    display: none;
+}
+
+.mp-badge.visible {
+    display: block;
+}
+
+.mp-badge.acquirer {
+    background: var(--mp-acquirer);
+    color: white;
+}
+
+.mp-badge.issuer {
+    background: var(--mp-issuer);
+    color: white;
+}
+
+/* Brand Logos (Network Card) */
+.brand-logos {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+
+.brand-logo {
+    width: 40px;
+    height: 26px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 800;
+    transition: transform var(--transition-fast);
+    cursor: pointer;
+}
+
+.brand-logo:hover {
+    transform: scale(1.15);
+}
+
+.brand-logo.visa {
+    background: linear-gradient(135deg, #1A1F71, #2B3990);
+    color: white;
+}
+
+.brand-logo.mastercard {
+    background: linear-gradient(135deg, #EB001B, #F79E1B);
+    color: white;
+}
+
+.brand-logo.amex {
+    background: linear-gradient(135deg, #006FCF, #0099DF);
+    color: white;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .actor-card {
+        min-width: 120px;
+        padding: 12px 14px;
+    }
+    
+    .actor-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 18px;
+    }
+    
+    .actor-info h3 {
+        font-size: 12px;
+    }
+    
+    .actor-info p {
+        display: none;
+    }
+    
+    .mp-badge {
+        font-size: 8px;
+        padding: 3px 8px;
+    }
+    
+    .brand-logos {
+        gap: 8px;
+    }
+    
+    .brand-logo {
+        width: 32px;
+        height: 20px;
+        font-size: 7px;
+    }
+}
