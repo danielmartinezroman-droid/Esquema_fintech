@@ -121,16 +121,16 @@ const ACTORS = {
     atm: {
         id: 'atm',
         name: 'Cajero ATM',
-        shortName: 'ATM',
+        shortName: 'ATM Ajeno',
         icon: '🏧',
-        description: 'Terminal de autoservicio que permite retiros de efectivo, consultas de saldo y otras operaciones bancarias.',
+        description: 'Cajero automático de OTRO banco (no MP). El cliente MP usa este cajero para retirar efectivo.',
         color: 'merchant',
         actions: [
             { icon: '💳', title: 'Lee tarjeta', description: 'Chip, banda magnética o contactless' },
-            { icon: '🔢', title: 'Solicita PIN', description: 'Autenticación del cliente' },
+            { icon: '🔢', title: 'Solicita PIN', description: 'Cliente ingresa su clave' },
             { icon: '💵', title: 'Dispensa efectivo', description: 'Entrega billetes al cliente' }
         ],
-        infoTag: { text: '🏧 Cobra Surcharge', type: 'income', tooltip: 'Comisión por uso de ATM ajeno' }
+        infoTag: { text: '🏧 Cajero Ajeno', type: 'neutral', tooltip: 'ATM de otro banco, no de MP' }
     },
 
     atmBank: {
@@ -138,34 +138,66 @@ const ACTORS = {
         name: 'Banco del ATM',
         shortName: 'Banco ATM',
         icon: '🏦',
-        description: 'Banco propietario u operador del cajero automático. Procesa la transacción y cobra comisiones.',
+        description: 'Banco dueño/operador del cajero automático. Puede cobrar Surcharge al cliente por usar su ATM siendo de otro banco.',
         color: 'acquirer',
         actions: [
             { icon: '📡', title: 'Recibe solicitud', description: 'Del cajero automático' },
-            { icon: '🔀', title: 'Enruta a la red', description: 'Cirrus, Plus, Visa, MC' },
-            { icon: '💰', title: 'Cobra ATM Fee', description: 'Comisión por operación' }
+            { icon: '🔀', title: 'Enruta a la red', description: 'Redgiro, Cirrus, Plus' },
+            { icon: '💰', title: 'Puede cobrar Surcharge', description: 'Comisión al cliente ($0-$1,500)' }
         ],
-        infoTag: { text: '💰 Recibe ATM Fee', type: 'income', tooltip: 'Comisión interbancaria por retiro' }
+        fees: [
+            { label: 'Surcharge (opcional)', value: '$0 - $1,500' },
+            { label: 'Tarifa interbancaria', value: 'Recibe del emisor' }
+        ],
+        infoTag: { text: '💰 Cobra Surcharge', type: 'income', tooltip: 'Comisión que puede cobrar al cliente por usar ATM ajeno' }
     },
 
     atmNetwork: {
         id: 'atmNetwork',
-        name: 'Red ATM',
-        shortName: 'Red',
+        name: 'Red Interbancaria',
+        shortName: 'Redgiro',
         icon: '🌐',
-        description: 'Red interbancaria que conecta cajeros automáticos con bancos emisores (Cirrus, Plus, Redbanc, etc.).',
+        description: 'Red que conecta cajeros automáticos con bancos emisores. En Chile: Redgiro. Internacional: Cirrus (MC), Plus (Visa).',
         color: 'network',
         isCenter: true,
         brands: [
-            { id: 'cirrus', name: 'CIRRUS', class: 'mastercard' },
-            { id: 'plus', name: 'PLUS', class: 'visa' }
+            { id: 'redgiro', name: 'REDGIRO', class: 'mastercard' },
+            { id: 'cirrus', name: 'CIRRUS', class: 'visa' },
+            { id: 'plus', name: 'PLUS', class: 'amex' }
         ],
         actions: [
-            { icon: '🔗', title: 'Interconexión', description: 'Conecta ATMs con emisores' },
-            { icon: '✅', title: 'Autorización', description: 'Valida en tiempo real' },
-            { icon: '📊', title: 'Clearing', description: 'Compensación entre bancos' }
+            { icon: '🔗', title: 'Interconexión ATM', description: 'Conecta cajeros con emisores' },
+            { icon: '✅', title: 'Autorización online', description: 'Valida en tiempo real' },
+            { icon: '📊', title: 'Clearing diario', description: 'Compensación entre bancos' }
         ],
-        infoTag: { text: '🔗 Conecta bancos', type: 'neutral', tooltip: 'Red de interconexión ATM' }
+        fees: [
+            { label: 'Costo trx Redgiro', value: '0.00068 UF/trx' },
+            { label: 'Costo fijo mensual', value: '~$150' }
+        ],
+        infoTag: { text: '🔗 Red ATM', type: 'neutral', tooltip: 'Redgiro / Cirrus / Plus' }
+    },
+
+    // Issuer específico para ATM (hereda de issuer pero con info de ATM)
+    issuerAtm: {
+        id: 'issuer',
+        name: 'MP Emisor',
+        shortName: 'MP Emisor',
+        icon: '🏛️',
+        description: 'Mercado Pago como banco emisor. Cuando su cliente retira en cajero ajeno, MP Emisor paga tarifas interbancarias a la red y al banco del ATM.',
+        color: 'issuer',
+        badge: { text: 'MP Emisor', type: 'issuer' },
+        actions: [
+            { icon: '🔍', title: 'Autoriza retiro', description: 'Valida fondos y límites del cliente' },
+            { icon: '💸', title: 'Debita cuenta', description: 'Descuenta monto + comisiones' },
+            { icon: '📤', title: 'Paga tarifa interbancaria', description: 'Costo por usar red ajena' }
+        ],
+        fees: [
+            { label: 'Tarifa Banco Sponsor', value: 'UF 5/mes (~$55)' },
+            { label: 'Costo Redgiro Not on Us', value: '0.00068 UF/trx' },
+            { label: 'Tarifa Interbancaria', value: '~0.0155 UF/trx' }
+        ],
+        hasInterco: false,
+        infoTag: { text: '💸 Paga Tarifa Interbancaria', type: 'expense', tooltip: 'MP paga al banco del ATM y a la red por cada retiro' }
     },
 
     // ===== ACTORES TRANSFERENCIA =====
@@ -281,9 +313,22 @@ function getActorPosition(actorId) {
     return positions[actorId] || {};
 }
 
+// Función para obtener actor con override por flujo
+function getActor(actorId) {
+    const flowId = window.CURRENT_FLOW?.id || 'card-payment';
+    
+    // Override específico para ATM
+    if (flowId === 'atm-withdrawal' && actorId === 'issuer') {
+        return ACTORS.issuerAtm || ACTORS.issuer;
+    }
+    
+    return ACTORS[actorId];
+}
+
 // Exportar para uso global
 window.ACTORS = ACTORS;
 window.FLOW_ACTORS = FLOW_ACTORS;
 window.ACTOR_POSITIONS = ACTOR_POSITIONS;
 window.getFlowActors = getFlowActors;
 window.getActorPosition = getActorPosition;
+window.getActor = getActor;
