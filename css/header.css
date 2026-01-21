@@ -23,6 +23,30 @@
     gap: 14px;
 }
 
+/* Back Button */
+.back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition-base);
+}
+
+.back-btn:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+.logo-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border);
+}
+
 .logo-icon {
     width: 42px;
     height: 42px;
@@ -73,6 +97,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
+    cursor: pointer;
 }
 
 .view-btn:hover {
@@ -116,6 +141,7 @@
     border: 1px solid var(--border);
     background: var(--meli-white);
     color: var(--text-primary);
+    cursor: pointer;
 }
 
 .btn:hover {
@@ -145,5 +171,13 @@
 @media (max-width: 640px) {
     .header {
         padding: 0 var(--space-md);
+    }
+    
+    .logo-text h1 {
+        font-size: 14px;
+    }
+    
+    .logo-text span {
+        display: none;
     }
 }
