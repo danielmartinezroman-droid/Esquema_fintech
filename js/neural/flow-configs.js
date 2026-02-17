@@ -1,6 +1,7 @@
 /* ============================================
    FLOW CONFIGURATIONS
    Configuración de cada flujo de pagos
+   Paths SVG ajustados para conectar nodos
    ============================================ */
 
 const FLOW_CONFIGS = {
@@ -18,7 +19,7 @@ const FLOW_CONFIGS = {
                 subtitle: 'Cliente',
                 icon: '👤',
                 color: '#F472B6',
-                style: 'left: 8%; top: 15%;',
+                style: 'left: 5%; top: 8%;',
                 tag: 'Inicia pago'
             },
             {
@@ -27,7 +28,7 @@ const FLOW_CONFIGS = {
                 subtitle: 'Punto de venta',
                 icon: '🏪',
                 color: '#4ADE80',
-                style: 'right: 8%; top: 15%;',
+                style: 'right: 5%; top: 8%;',
                 tag: 'Recibe $960'
             },
             {
@@ -37,7 +38,7 @@ const FLOW_CONFIGS = {
                 icon: '🏦',
                 color: '#4ADE80',
                 badge: 'MP Operador',
-                style: 'right: 8%; bottom: 15%;',
+                style: 'right: 5%; bottom: 8%;',
                 tag: 'Cobra MDR'
             },
             {
@@ -56,19 +57,27 @@ const FLOW_CONFIGS = {
                 icon: '🏛️',
                 color: '#60A5FA',
                 badge: 'MP Emisor',
-                style: 'left: 8%; bottom: 15%;',
+                style: 'left: 5%; bottom: 8%;',
                 tag: 'Recibe Interchange'
             }
         ],
         
+        // Paths con viewBox 1000x600 - Coordenadas ajustadas
         paths: [
-            { id: 'path1', d: 'M200,130 C400,130 500,130 700,130', type: 'data' },
-            { id: 'path2', d: 'M750,180 C780,250 800,350 780,450', type: 'auth' },
-            { id: 'path3', d: 'M720,480 C650,420 600,380 550,350', type: 'data' },
-            { id: 'path4', d: 'M450,350 C380,380 300,420 220,480', type: 'auth' },
-            { id: 'path5', d: 'M220,450 C280,400 350,360 430,340', type: 'response' },
-            { id: 'path6', d: 'M550,340 C620,360 700,400 750,450', type: 'response' },
-            { id: 'path7', d: 'M780,420 C800,300 780,200 750,150', type: 'money' }
+            // 1: Cliente → Comercio (horizontal arriba)
+            { id: 'path1', d: 'M 150 80 L 850 80', type: 'data' },
+            // 2: Comercio → Adquirente (vertical derecha)
+            { id: 'path2', d: 'M 880 120 L 880 480', type: 'auth' },
+            // 3: Adquirente → Red (diagonal hacia centro)
+            { id: 'path3', d: 'M 820 520 Q 650 450 550 350', type: 'data' },
+            // 4: Red → Emisor (diagonal hacia abajo izq)
+            { id: 'path4', d: 'M 450 350 Q 300 450 180 480', type: 'auth' },
+            // 5: Emisor → Red (respuesta diagonal)
+            { id: 'path5', d: 'M 180 480 Q 300 400 450 320', type: 'response' },
+            // 6: Red → Adquirente (respuesta diagonal)
+            { id: 'path6', d: 'M 550 320 Q 700 400 820 480', type: 'response' },
+            // 7: Adquirente → Comercio (dinero sube)
+            { id: 'path7', d: 'M 850 480 L 850 120', type: 'money' }
         ],
         
         steps: [
@@ -156,7 +165,7 @@ const FLOW_CONFIGS = {
                 subtitle: 'Tarjetahabiente',
                 icon: '👤',
                 color: '#F472B6',
-                style: 'left: 8%; top: 15%;',
+                style: 'left: 5%; top: 8%;',
                 tag: 'Inicia retiro'
             },
             {
@@ -165,7 +174,7 @@ const FLOW_CONFIGS = {
                 subtitle: 'Banco externo',
                 icon: '🏧',
                 color: '#4ADE80',
-                style: 'right: 8%; top: 15%;',
+                style: 'right: 5%; top: 8%;',
                 tag: 'Cajero ajeno'
             },
             {
@@ -176,7 +185,7 @@ const FLOW_CONFIGS = {
                 color: '#4ADE80',
                 badge: 'Surcharge',
                 badgeColor: '#4ADE80',
-                style: 'right: 8%; bottom: 15%;',
+                style: 'right: 5%; bottom: 8%;',
                 tag: 'Cobra comisión'
             },
             {
@@ -196,19 +205,27 @@ const FLOW_CONFIGS = {
                 color: '#FFE600',
                 badge: 'MP Emisor',
                 badgeColor: '#FFE600',
-                style: 'left: 8%; bottom: 15%;',
+                style: 'left: 5%; bottom: 8%;',
                 tag: 'Autoriza & Debita'
             }
         ],
         
+        // Paths con viewBox 1000x600
         paths: [
-            { id: 'path1', d: 'M200,130 C400,130 500,130 700,130', type: 'data' },
-            { id: 'path2', d: 'M750,180 C780,250 800,350 780,450', type: 'auth' },
-            { id: 'path3', d: 'M720,480 C650,420 600,380 550,350', type: 'data' },
-            { id: 'path4', d: 'M450,350 C380,380 300,420 220,480', type: 'auth' },
-            { id: 'path5', d: 'M220,450 C280,400 350,360 430,340', type: 'response' },
-            { id: 'path6', d: 'M550,340 C620,360 700,400 750,450', type: 'response' },
-            { id: 'path7', d: 'M780,420 C800,300 780,200 750,150', type: 'money' }
+            // 1: Cliente → ATM (horizontal arriba)
+            { id: 'path1', d: 'M 150 80 L 850 80', type: 'data' },
+            // 2: ATM → Banco ATM (vertical derecha)
+            { id: 'path2', d: 'M 880 120 L 880 480', type: 'auth' },
+            // 3: Banco ATM → Red (diagonal hacia centro)
+            { id: 'path3', d: 'M 820 520 Q 650 450 550 350', type: 'data' },
+            // 4: Red → Emisor (diagonal hacia abajo izq)
+            { id: 'path4', d: 'M 450 350 Q 300 450 180 480', type: 'auth' },
+            // 5: Emisor → Red (respuesta)
+            { id: 'path5', d: 'M 180 480 Q 300 400 450 320', type: 'response' },
+            // 6: Red → Banco ATM (respuesta)
+            { id: 'path6', d: 'M 550 320 Q 700 400 820 480', type: 'response' },
+            // 7: Banco ATM → ATM (dinero sube)
+            { id: 'path7', d: 'M 850 480 L 850 120', type: 'money' }
         ],
         
         steps: [
@@ -298,7 +315,7 @@ const FLOW_CONFIGS = {
                 subtitle: 'Ordenante',
                 icon: '👤',
                 color: '#F472B6',
-                style: 'left: 8%; top: 25%;',
+                style: 'left: 5%; top: 8%;',
                 tag: 'Inicia transferencia'
             },
             {
@@ -308,7 +325,7 @@ const FLOW_CONFIGS = {
                 icon: '🏛️',
                 color: '#FFE600',
                 badge: 'MP Emisor',
-                style: 'left: 35%; top: 15%;',
+                style: 'right: 5%; top: 8%;',
                 tag: 'Money Out'
             },
             {
@@ -326,7 +343,7 @@ const FLOW_CONFIGS = {
                 subtitle: 'Receptor',
                 icon: '🏦',
                 color: '#4ADE80',
-                style: 'right: 35%; bottom: 15%;',
+                style: 'right: 5%; bottom: 8%;',
                 tag: 'Money In'
             },
             {
@@ -335,16 +352,21 @@ const FLOW_CONFIGS = {
                 subtitle: 'Receptor final',
                 icon: '👤',
                 color: '#4ADE80',
-                style: 'right: 8%; bottom: 25%;',
+                style: 'left: 5%; bottom: 8%;',
                 tag: 'Recibe fondos'
             }
         ],
         
+        // Paths para transferencia (flujo diferente)
         paths: [
-            { id: 'path1', d: 'M200,200 C280,180 350,160 420,150', type: 'data' },
-            { id: 'path2', d: 'M500,180 C530,220 550,280 550,330', type: 'auth' },
-            { id: 'path3', d: 'M580,380 C620,420 680,450 740,470', type: 'money' },
-            { id: 'path4', d: 'M820,500 C880,520 940,530 1000,540', type: 'money' }
+            // 1: Usuario → MP Emisor
+            { id: 'path1', d: 'M 150 80 L 850 80', type: 'data' },
+            // 2: MP Emisor → Cámara
+            { id: 'path2', d: 'M 850 120 Q 700 250 550 300', type: 'auth' },
+            // 3: Cámara → Banco Destino
+            { id: 'path3', d: 'M 550 350 Q 700 450 850 500', type: 'money' },
+            // 4: Banco Destino → Beneficiario
+            { id: 'path4', d: 'M 820 520 L 180 520', type: 'money' }
         ],
         
         steps: [
