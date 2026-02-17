@@ -1,167 +1,175 @@
 /* ============================================
-   Header Styles
+   Header - Premium Dark Theme
    ============================================ */
 
 .header {
     position: sticky;
     top: 0;
     z-index: var(--z-sticky);
-    background: var(--meli-white);
-    border-bottom: 1px solid var(--border);
-    padding: 0 var(--space-xl);
     height: 64px;
+    padding: 0 var(--space-6);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: var(--shadow-sm);
+    background: rgba(9, 9, 11, 0.8);
+    backdrop-filter: blur(12px) saturate(180%);
+    border-bottom: 1px solid var(--border-subtle);
 }
 
-/* Logo Section */
+/* ===== Logo Section ===== */
 .logo-section {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: var(--space-4);
 }
 
-/* Back Button */
 .back-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 36px;
+    height: 36px;
     border-radius: var(--radius-md);
-    color: var(--text-secondary);
-    text-decoration: none;
-    transition: var(--transition-base);
+    color: var(--text-tertiary);
+    transition: all var(--duration-base) var(--ease-out);
 }
 
 .back-btn:hover {
-    background: var(--bg-primary);
+    background: var(--bg-hover);
     color: var(--text-primary);
 }
 
 .logo-divider {
     width: 1px;
-    height: 32px;
-    background: var(--border);
+    height: 24px;
+    background: var(--border-default);
 }
 
 .logo-icon {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
     background: var(--meli-yellow);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 8px var(--meli-yellow-glow);
+    color: var(--text-inverse);
+    box-shadow: 
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        var(--shadow-glow);
+    transition: transform var(--duration-base) var(--ease-out);
+}
+
+.logo-icon:hover {
+    transform: scale(1.05);
 }
 
 .logo-icon svg {
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
 }
 
 .logo-text h1 {
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--meli-dark);
-    letter-spacing: -0.3px;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
 }
 
 .logo-text span {
-    font-size: 12px;
-    color: var(--text-muted);
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
     font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
-/* View Toggle */
+/* ===== View Toggle ===== */
 .view-toggle {
     display: flex;
-    background: var(--bg-primary);
-    border-radius: var(--radius-md);
     padding: 4px;
-    gap: 4px;
+    gap: 2px;
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
 }
 
 .view-btn {
-    padding: 8px 16px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    background: transparent;
-    border: none;
-    border-radius: var(--radius-sm);
-    transition: var(--transition-base);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-tertiary);
+    border-radius: var(--radius-md);
+    transition: all var(--duration-base) var(--ease-out);
     display: flex;
     align-items: center;
-    gap: 6px;
-    cursor: pointer;
+    gap: var(--space-2);
 }
 
 .view-btn:hover {
-    background: var(--meli-white);
-    color: var(--text-primary);
+    color: var(--text-secondary);
+    background: var(--bg-hover);
 }
 
 .view-btn.active {
-    background: var(--meli-white);
     color: var(--text-primary);
-    box-shadow: var(--shadow-md);
+    background: var(--bg-tertiary);
+    box-shadow: var(--shadow-sm);
 }
 
 .view-btn .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: var(--radius-full);
+    opacity: 0.7;
 }
 
-.view-btn[data-view="full"] .dot { background: var(--meli-gray-700); }
+.view-btn.active .dot {
+    opacity: 1;
+    box-shadow: 0 0 8px currentColor;
+}
+
+.view-btn[data-view="full"] .dot { background: var(--text-secondary); }
 .view-btn[data-view="acquirer"] .dot { background: var(--mp-acquirer); }
 .view-btn[data-view="issuer"] .dot { background: var(--mp-issuer); }
 .view-btn[data-view="interco"] .dot { background: var(--mp-interco); }
 
-/* Header Actions */
+/* ===== Header Actions ===== */
 .header-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--space-3);
 }
 
 .btn {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    padding: 10px 18px;
-    border-radius: var(--radius-md);
-    font-size: 13px;
-    font-weight: 600;
-    transition: var(--transition-base);
-    border: 1px solid var(--border);
-    background: var(--meli-white);
-    color: var(--text-primary);
-    cursor: pointer;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    color: var(--text-secondary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    transition: all var(--duration-base) var(--ease-out);
 }
 
 .btn:hover {
-    border-color: var(--border-active);
-    box-shadow: var(--shadow-md);
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+    border-color: var(--border-strong);
 }
 
-.btn-primary {
-    background: var(--meli-yellow);
-    border-color: var(--meli-yellow);
-    color: var(--meli-dark);
+.btn svg {
+    opacity: 0.7;
 }
 
-.btn-primary:hover {
-    background: var(--meli-yellow-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 16px var(--meli-yellow-glow);
+.btn:hover svg {
+    opacity: 1;
 }
 
-/* Responsive */
+/* ===== Responsive ===== */
 @media (max-width: 1200px) {
     .view-toggle {
         display: none;
@@ -170,11 +178,7 @@
 
 @media (max-width: 640px) {
     .header {
-        padding: 0 var(--space-md);
-    }
-    
-    .logo-text h1 {
-        font-size: 14px;
+        padding: 0 var(--space-4);
     }
     
     .logo-text span {
