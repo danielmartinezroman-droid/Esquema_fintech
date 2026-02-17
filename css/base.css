@@ -2,7 +2,7 @@
    Base Styles - Dark Premium Theme
    ============================================ */
 
-* {
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -13,12 +13,13 @@ html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    background-color: #09090B;
 }
 
 body {
-    font-family: var(--font-sans);
-    background: var(--bg-primary);
-    color: var(--text-primary);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: #09090B;
+    color: #FAFAFA;
     min-height: 100vh;
     overflow-x: hidden;
     line-height: 1.6;
@@ -47,19 +48,14 @@ body {
 /* ===== Main Layout ===== */
 .main-container {
     position: relative;
-    z-index: var(--z-base);
+    
     display: grid;
-    grid-template-columns: 1fr 380px;
+    grid-template-columns: 1fr 400px;
     min-height: calc(100vh - 64px);
-    gap: 1px;
-    background: var(--border-subtle);
+    background-color: #09090B;
 }
 
-.main-container > * {
-    background: var(--bg-primary);
-}
-
-/* ===== Scrollbar Styling ===== */
+/* ===== Scrollbar ===== */
 ::-webkit-scrollbar {
     width: 8px;
     height: 8px;
@@ -70,23 +66,23 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--gray-700);
-    border-radius: var(--radius-full);
+    background: #3F3F46;
+    border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--gray-600);
+    background: #52525B;
 }
 
 /* ===== Selection ===== */
 ::selection {
-    background: var(--meli-yellow);
-    color: var(--text-inverse);
+    background: #FFE600;
+    color: #09090B;
 }
 
-/* ===== Focus Styles ===== */
+/* ===== Focus ===== */
 :focus-visible {
-    outline: 2px solid var(--meli-yellow);
+    outline: 2px solid #FFE600;
     outline-offset: 2px;
 }
 
@@ -107,7 +103,7 @@ a {
 /* ===== Responsive ===== */
 @media (max-width: 1200px) {
     .main-container {
-        grid-template-columns: 1fr 340px;
+        grid-template-columns: 1fr 360px;
     }
 }
 
