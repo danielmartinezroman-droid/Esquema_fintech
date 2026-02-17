@@ -1,5 +1,5 @@
 /* ============================================
-   MELI Design System - Premium Edition
+   MELI Design System - Premium Dark Edition
    ============================================ */
 
 :root {
@@ -37,7 +37,7 @@
     --border-subtle: rgba(255, 255, 255, 0.06);
     --border-default: rgba(255, 255, 255, 0.1);
     --border-strong: rgba(255, 255, 255, 0.15);
-    --border-focus: var(--meli-yellow);
+    --border-focus: #FFE600;
     
     --text-primary: #FAFAFA;
     --text-secondary: #A1A1AA;
@@ -68,25 +68,25 @@
     --red-500: #EF4444;
     --red-400: #F87171;
     
-    /* ===== Actor Colors (Dark Theme) ===== */
+    /* ===== Actor Colors ===== */
     --color-cardholder: #F472B6;
-    --color-cardholder-light: rgba(244, 114, 182, 0.12);
+    --color-cardholder-light: rgba(244, 114, 182, 0.15);
     --color-cardholder-glow: rgba(244, 114, 182, 0.3);
     
     --color-merchant: #4ADE80;
-    --color-merchant-light: rgba(74, 222, 128, 0.12);
+    --color-merchant-light: rgba(74, 222, 128, 0.15);
     --color-merchant-glow: rgba(74, 222, 128, 0.3);
     
     --color-acquirer: #4ADE80;
-    --color-acquirer-light: rgba(74, 222, 128, 0.12);
+    --color-acquirer-light: rgba(74, 222, 128, 0.15);
     --color-acquirer-glow: rgba(74, 222, 128, 0.3);
     
     --color-network: #C084FC;
-    --color-network-light: rgba(192, 132, 252, 0.12);
+    --color-network-light: rgba(192, 132, 252, 0.15);
     --color-network-glow: rgba(192, 132, 252, 0.3);
     
     --color-issuer: #60A5FA;
-    --color-issuer-light: rgba(96, 165, 250, 0.12);
+    --color-issuer-light: rgba(96, 165, 250, 0.15);
     --color-issuer-glow: rgba(96, 165, 250, 0.3);
     
     /* ===== Flow Colors ===== */
@@ -100,7 +100,7 @@
     --mp-issuer: #60A5FA;
     --mp-interco: #FB923C;
     
-    /* ===== Spacing Scale ===== */
+    /* ===== Spacing ===== */
     --space-1: 4px;
     --space-2: 8px;
     --space-3: 12px;
@@ -120,7 +120,7 @@
     --radius-2xl: 24px;
     --radius-full: 9999px;
     
-    /* ===== Shadows (Dark Theme) ===== */
+    /* ===== Shadows ===== */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
     --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
@@ -154,4 +154,9 @@
     --text-xl: 18px;
     --text-2xl: 24px;
     --text-3xl: 32px;
+}
+
+/* Force dark background on html and body */
+html, body {
+    background-color: #09090B !important;
 }
