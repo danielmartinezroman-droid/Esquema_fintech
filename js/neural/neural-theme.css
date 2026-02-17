@@ -1,0 +1,108 @@
+/* ===== NEURAL CANVAS ADJUSTMENTS ===== */
+.neural-canvas {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: calc(100vh - 64px);
+}
+
+.neural-svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* Asegurar que los nodos estén posicionados correctamente */
+.neural-node {
+    position: absolute;
+    z-index: 20;
+}
+
+/* Posiciones específicas para layout 5 nodos (diamante) */
+.neural-node[data-node="cardholder"],
+.neural-node[data-node="user"] {
+    left: 5%;
+    top: 8%;
+}
+
+.neural-node[data-node="merchant"],
+.neural-node[data-node="atm"],
+.neural-node[data-node="mpIssuer"] {
+    right: 5%;
+    top: 8%;
+}
+
+.neural-node[data-node="acquirer"],
+.neural-node[data-node="atmBank"],
+.neural-node[data-node="destBank"] {
+    right: 5%;
+    bottom: 8%;
+}
+
+.neural-node[data-node="issuer"],
+.neural-node[data-node="beneficiary"] {
+    left: 5%;
+    bottom: 8%;
+}
+
+.neural-node[data-node="network"],
+.neural-node[data-node="clearingHouse"] {
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Impulse container */
+.impulse-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 15;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+/* Fix para el canvas area */
+.canvas-area {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    background: transparent;
+}
+
+/* Mejorar visibilidad de paths */
+.neural-path {
+    stroke-width: 2.5;
+    opacity: 0.4;
+}
+
+.neural-path.active {
+    stroke-width: 4;
+    opacity: 1;
+    filter: drop-shadow(0 0 12px currentColor);
+}
+
+.neural-path.completed {
+    opacity: 0.6;
+    stroke-width: 3;
+}
+
+/* Mejorar impulsos */
+.neural-impulse {
+    width: 16px;
+    height: 16px;
+    margin-left: -8px;
+    margin-top: -8px;
+}
+
+.neural-impulse::before {
+    inset: -8px;
+    filter: blur(12px);
+    opacity: 0.8;
+}
