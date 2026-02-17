@@ -3,117 +3,617 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modelo de 4 Partes — Ecosistema de Pagos</title>
-    
-    <!-- Fonts -->
+    <title>Neural Flow — Ecosistema de Pagos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/menu.css">
+    <style>
+        /* ===== VARIABLES ===== */
+        :root {
+            --bg: #050508;
+            --bg-card: rgba(20, 20, 28, 0.8);
+            --border: rgba(255, 255, 255, 0.06);
+            --border-hover: rgba(255, 255, 255, 0.12);
+            --text: #FAFAFA;
+            --text-secondary: #A1A1AA;
+            --text-muted: #71717A;
+            --yellow: #FFE600;
+            --yellow-glow: rgba(255, 230, 0, 0.3);
+            --green: #4ADE80;
+            --blue: #60A5FA;
+            --purple: #C084FC;
+            --pink: #F472B6;
+        }
+
+        /* ===== RESET ===== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== BACKGROUND ===== */
+        .bg-canvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .bg-canvas canvas {
+            width: 100%;
+            height: 100%;
+            opacity: 0.5;
+        }
+
+        .bg-gradient {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            background: 
+                radial-gradient(ellipse 100% 70% at 50% -20%, rgba(255, 230, 0, 0.15), transparent 50%),
+                radial-gradient(ellipse 80% 50% at 100% 50%, rgba(96, 165, 250, 0.08), transparent 50%),
+                radial-gradient(ellipse 60% 40% at 0% 100%, rgba(192, 132, 252, 0.08), transparent 50%);
+            pointer-events: none;
+        }
+
+        /* ===== CONTAINER ===== */
+        .container {
+            position: relative;
+            
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            padding: 24px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            background: rgba(5, 5, 8, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--yellow), #FF9500);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px var(--yellow-glow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            animation: shimmer 3s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .logo-icon svg {
+            width: 28px;
+            height: 28px;
+            color: #000;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo-text h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            background: linear-gradient(135deg, var(--text), var(--text-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo-text span {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .header-badge {
+            padding: 8px 16px;
+            background: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.2);
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .header-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* ===== MAIN ===== */
+        .main {
+            flex: 1;
+            padding: 60px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .intro h2 {
+            font-size: 42px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--text) 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .intro p {
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ===== FLOW CARDS ===== */
+        .flow-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 24px;
+        }
+
+        .flow-card {
+            position: relative;
+            padding: 32px;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .flow-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent 50%);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .flow-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: radial-gradient(ellipse at top, var(--card-glow, rgba(255,230,0,0.1)), transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .flow-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--border-hover);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                0 0 0 1px var(--border-hover);
+        }
+
+        .flow-card:hover::after {
+            opacity: 1;
+        }
+
+        .flow-card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .flow-card:hover .card-arrow {
+            transform: translateX(8px);
+            color: var(--yellow);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            padding: 6px 14px;
+            background: var(--yellow);
+            color: #000;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            border-radius: 100px;
+            box-shadow: 0 4px 20px var(--yellow-glow);
+        }
+
+        .card-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 24px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .card-content h3 {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+
+        .card-content p {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .card-actors {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .card-actors span {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+        }
+
+        .card-tags span {
+            padding: 4px 10px;
+            background: rgba(255, 230, 0, 0.08);
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--yellow);
+        }
+
+        .card-arrow {
+            position: absolute;
+            bottom: 32px;
+            right: 32px;
+            font-size: 24px;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+
+        /* Coming Soon Card */
+        .flow-card.coming-soon {
+            opacity: 0.5;
+            cursor: default;
+            border-style: dashed;
+        }
+
+        .flow-card.coming-soon:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .flow-card.coming-soon .card-icon {
+            opacity: 0.5;
+        }
+
+        .flow-card.coming-soon:hover .card-icon {
+            transform: none;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding: 24px 40px;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            background: rgba(5, 5, 8, 0.5);
+        }
+
+        .footer p {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .header {
+                padding: 16px 20px;
+            }
+
+            .logo-icon {
+                width: 44px;
+                height: 44px;
+            }
+
+            .logo-text h1 {
+                font-size: 18px;
+            }
+
+            .logo-text span {
+                display: none;
+            }
+
+            .header-badge {
+                display: none;
+            }
+
+            .main {
+                padding: 40px 20px;
+            }
+
+            .intro h2 {
+                font-size: 28px;
+            }
+
+            .intro p {
+                font-size: 15px;
+            }
+
+            .flow-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div class="bg-pattern"></div>
+    <!-- Background -->
+    <div class="bg-canvas">
+        <canvas id="bgCanvas"></canvas>
+    </div>
     <div class="bg-gradient"></div>
 
-    <div class="menu-container">
+    <!-- Container -->
+    <div class="container">
         <!-- Header -->
-        <header class="menu-header">
+        <header class="header">
             <div class="logo">
                 <div class="logo-icon">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" 
-                              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
                     </svg>
                 </div>
                 <div class="logo-text">
-                    <h1>Flujos de Pago</h1>
-                    <span>Ecosistema Financiero Interactivo</span>
+                    <h1>Neural Flow</h1>
+                    <span>Ecosistema de Pagos</span>
                 </div>
+            </div>
+            <div class="header-badge">
+                Sistema Interactivo
             </div>
         </header>
 
-        <!-- Main Content -->
-        <main class="menu-main">
-            <div class="menu-intro">
-                <h2>Selecciona un flujo para explorar</h2>
-                <p>Diagramas interactivos que explican cómo funcionan los diferentes flujos de dinero en el ecosistema de pagos.</p>
+        <!-- Main -->
+        <main class="main">
+            <div class="intro">
+                <h2>Explora los flujos de pago</h2>
+                <p>Visualiza cómo viaja el dinero y la información a través del ecosistema financiero con simulaciones interactivas estilo red neuronal.</p>
             </div>
 
-            <div class="flow-cards">
+            <div class="flow-grid">
                 <!-- Card: Pago con Tarjeta -->
-                <a href="flows/card-payment.html" class="flow-card">
-                    <div class="flow-card-icon">💳</div>
-                    <div class="flow-card-badge">Modelo 4 Partes</div>
-                    <h3>Pago con Tarjeta</h3>
-                    <p>Flujo completo de una transacción con tarjeta de crédito/débito. Incluye autorización, clearing y settlement.</p>
-                    <div class="flow-card-actors">
-                        <span>👤 Tarjetahabiente</span>
-                        <span>🏪 Comercio</span>
-                        <span>🏦 Adquirente</span>
-                        <span>🏛️ Emisor</span>
+                <a href="flows/card-payment.html" class="flow-card" style="--card-glow: rgba(244, 114, 182, 0.15);">
+                    <span class="card-badge">4 Partes</span>
+                    <div class="card-icon">💳</div>
+                    <div class="card-content">
+                        <h3>Pago con Tarjeta</h3>
+                        <p>Flujo completo de una transacción con tarjeta de crédito o débito. Autorización, clearing y settlement.</p>
+                        <div class="card-actors">
+                            <span>👤 Cliente</span>
+                            <span>🏪 Comercio</span>
+                            <span>🏦 Adquirente</span>
+                            <span>🏛️ Emisor</span>
+                        </div>
+                        <div class="card-tags">
+                            <span>Interchange</span>
+                            <span>MDR</span>
+                            <span>Scheme Fee</span>
+                        </div>
                     </div>
-                    <div class="flow-card-tags">
-                        <span class="tag">Interchange</span>
-                        <span class="tag">MDR</span>
-                        <span class="tag">Scheme Fee</span>
-                    </div>
-                    <div class="flow-card-arrow">→</div>
+                    <span class="card-arrow">→</span>
                 </a>
 
                 <!-- Card: Retiro ATM -->
-                <a href="flows/atm-withdrawal.html" class="flow-card">
-                    <div class="flow-card-icon">🏧</div>
-                    <div class="flow-card-badge">Money Out</div>
-                    <h3>Retiro en Cajero ATM</h3>
-                    <p>Flujo cuando un cliente retira efectivo de un cajero automático usando su tarjeta de débito.</p>
-                    <div class="flow-card-actors">
-                        <span>👤 Tarjetahabiente</span>
-                        <span>🏧 ATM</span>
-                        <span>🏦 Banco ATM</span>
-                        <span>🏛️ Emisor</span>
+                <a href="flows/atm-withdrawal.html" class="flow-card" style="--card-glow: rgba(74, 222, 128, 0.15);">
+                    <span class="card-badge">Money Out</span>
+                    <div class="card-icon">🏧</div>
+                    <div class="card-content">
+                        <h3>Retiro en Cajero ATM</h3>
+                        <p>Flujo cuando un cliente retira efectivo de un cajero automático usando su tarjeta de débito.</p>
+                        <div class="card-actors">
+                            <span>👤 Cliente</span>
+                            <span>🏧 ATM</span>
+                            <span>🌐 Red</span>
+                            <span>🏛️ Emisor</span>
+                        </div>
+                        <div class="card-tags">
+                            <span>Surcharge</span>
+                            <span>Tarifa Interbancaria</span>
+                        </div>
                     </div>
-                    <div class="flow-card-tags">
-                        <span class="tag">Surcharge</span>
-                        <span class="tag">ATM Fee</span>
-                    </div>
-                    <div class="flow-card-arrow">→</div>
+                    <span class="card-arrow">→</span>
                 </a>
 
                 <!-- Card: Transferencia -->
-                <a href="flows/transfer.html" class="flow-card">
-                    <div class="flow-card-icon">🔄</div>
-                    <div class="flow-card-badge">Money Out / In</div>
-                    <h3>Transferencia Bancaria</h3>
-                    <p>Flujo de transferencia de dinero desde MP Emisor hacia otro banco externo vía cámara de compensación.</p>
-                    <div class="flow-card-actors">
-                        <span>👤 Usuario</span>
-                        <span>🏛️ MP Emisor</span>
-                        <span>🏦 Cámara</span>
-                        <span>🏦 Banco Destino</span>
+                <a href="flows/transfer.html" class="flow-card" style="--card-glow: rgba(192, 132, 252, 0.15);">
+                    <span class="card-badge">Money Out/In</span>
+                    <div class="card-icon">🔄</div>
+                    <div class="card-content">
+                        <h3>Transferencia Bancaria</h3>
+                        <p>Flujo de transferencia de dinero entre cuentas a través de cámaras de compensación.</p>
+                        <div class="card-actors">
+                            <span>👤 Usuario</span>
+                            <span>🏛️ Origen</span>
+                            <span>🔄 Cámara</span>
+                            <span>🏦 Destino</span>
+                        </div>
+                        <div class="card-tags">
+                            <span>ACH</span>
+                            <span>SPEI</span>
+                            <span>TEF</span>
+                        </div>
                     </div>
-                    <div class="flow-card-tags">
-                        <span class="tag">ACH</span>
-                        <span class="tag">SPEI</span>
-                        <span class="tag">TEF</span>
-                    </div>
-                    <div class="flow-card-arrow">→</div>
+                    <span class="card-arrow">→</span>
                 </a>
 
                 <!-- Card: Próximamente -->
-                <div class="flow-card flow-card-coming">
-                    <div class="flow-card-icon">🚀</div>
-                    <h3>Más flujos próximamente</h3>
-                    <p>Chargebacks, 3D Secure, QR Payments, BNPL, y más...</p>
-                    <div class="flow-card-arrow">+</div>
+                <div class="flow-card coming-soon">
+                    <div class="card-icon">🚀</div>
+                    <div class="card-content">
+                        <h3>Más flujos próximamente</h3>
+                        <p>Chargebacks, 3D Secure, QR Payments, BNPL, Crypto y más...</p>
+                        <div class="card-tags">
+                            <span>En desarrollo</span>
+                        </div>
+                    </div>
+                    <span class="card-arrow">+</span>
                 </div>
             </div>
         </main>
 
         <!-- Footer -->
-        <footer class="menu-footer">
-            <p>Hecho con 💛 para el equipo de Pagos</p>
+        <footer class="footer">
+            <p>Hecho con 💛 para el equipo de Pagos — Neural Flow v2.0</p>
         </footer>
     </div>
+
+    <!-- Background Script -->
+    <script>
+        const canvas = document.getElementById('bgCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function init() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            particles = [];
+            const count = Math.floor((canvas.width * canvas.height) / 15000);
+            
+            for (let i = 0; i < count; i++) {
+                particles.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    radius: Math.random() * 2 + 1
+                });
+            }
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            particles.forEach((p, i) => {
+                p.x += p.vx;
+                p.y += p.vy;
+
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 230, 0, 0.5)';
+                ctx.fill();
+
+                particles.forEach((p2, j) => {
+                    if (i === j) return;
+                    const dx = p.x - p2.x;
+                    const dy = p.y - p2.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(p.x, p.y);
+                        ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(255, 230, 0, ${0.1 * (1 - dist / 120)})`;
+                        ctx.stroke();
+                    }
+                });
+            });
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', init);
+        init();
+        animate();
+    </script>
 </body>
 </html>
