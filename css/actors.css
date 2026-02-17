@@ -1,191 +1,280 @@
 /* ============================================
-   Actor Cards Styles
+   Actor Cards - Premium Glass Design
    ============================================ */
 
-/* Diagram Area */
+/* ===== Diagram Area ===== */
 .diagram-area {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: var(--space-xl);
+    padding: var(--space-8);
+    min-height: 600px;
 }
 
 .diagram-container {
     position: relative;
     width: 100%;
-    max-width: 800px;
+    max-width: 780px;
     aspect-ratio: 1.15;
 }
 
-/* Actor Card Base */
+/* ===== Actor Card - Glass Morphism ===== */
 .actor-card {
     position: absolute;
-    padding: 16px 20px;
-    background: var(--meli-white);
-    border: 2px solid var(--border);
-    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    min-width: 180px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.05) 0%,
+        rgba(255, 255, 255, 0.02) 100%
+    );
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
     cursor: pointer;
-    transition: var(--transition-bounce);
-    box-shadow: var(--shadow-sm);
+    transition: all var(--duration-slow) var(--ease-out);
     z-index: var(--z-base);
-    min-width: 160px;
+}
+
+.actor-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-xl);
+    padding: 1px;
+    background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        transparent 50%,
+        transparent 100%
+    );
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
 }
 
 .actor-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    transform: translateY(-4px) scale(1.02);
+    border-color: var(--border-strong);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px var(--border-default);
 }
 
 .actor-card.active {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
     border-color: var(--meli-yellow);
+    box-shadow: 
+        0 0 0 1px var(--meli-yellow),
+        0 0 30px var(--meli-yellow-glow),
+        0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 .actor-card.highlight {
     z-index: var(--z-dropdown);
     transform: scale(1.05);
-    box-shadow: var(--shadow-xl);
+    border-color: var(--meli-yellow);
+    box-shadow: 
+        0 0 0 2px var(--meli-yellow),
+        0 0 60px var(--meli-yellow-glow),
+        0 25px 50px rgba(0, 0, 0, 0.5);
 }
 
 .actor-card.dim {
-    opacity: 0.35;
-    transform: scale(0.97);
+    opacity: 0.3;
+    transform: scale(0.95);
+    filter: grayscale(0.5);
 }
 
 .actor-card.mp-highlight {
     border-color: var(--meli-yellow);
-    box-shadow: 0 0 0 4px var(--meli-yellow-glow), var(--shadow-lg);
+    box-shadow: 
+        0 0 0 1px var(--meli-yellow),
+        0 0 40px var(--meli-yellow-glow);
 }
 
-/* Actor Positions */
-.actor-card[data-actor="cardholder"] {
+/* ===== Actor Positions ===== */
+.actor-card[data-actor="cardholder"],
+.actor-card[data-actor="user"] {
     top: 0;
-    left: 8%;
-}
-
-.actor-card[data-actor="merchant"] {
-    top: 0;
-    right: 8%;
-}
-
-.actor-card[data-actor="acquirer"] {
-    bottom: 8%;
-    right: 5%;
-}
-
-.actor-card[data-actor="issuer"] {
-    bottom: 8%;
     left: 5%;
 }
 
-.actor-card[data-actor="network"] {
+.actor-card[data-actor="merchant"],
+.actor-card[data-actor="atm"],
+.actor-card[data-actor="mpIssuer"] {
+    top: 0;
+    right: 5%;
+}
+
+.actor-card[data-actor="acquirer"],
+.actor-card[data-actor="atmBank"],
+.actor-card[data-actor="destinationBank"] {
+    bottom: 5%;
+    right: 5%;
+}
+
+.actor-card[data-actor="issuer"],
+.actor-card[data-actor="beneficiary"] {
+    bottom: 5%;
+    left: 5%;
+}
+
+.actor-card[data-actor="network"],
+.actor-card[data-actor="atmNetwork"],
+.actor-card[data-actor="clearingHouse"] {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    min-width: 180px;
+    min-width: 200px;
     text-align: center;
-    border-color: var(--color-network);
-    border-width: 2px;
 }
 
-/* Network special transforms */
-.actor-card[data-actor="network"]:hover {
+.actor-card[data-actor="network"]:hover,
+.actor-card[data-actor="atmNetwork"]:hover,
+.actor-card[data-actor="clearingHouse"]:hover {
     transform: translate(-50%, -50%) scale(1.03);
 }
 
-.actor-card[data-actor="network"].highlight {
+.actor-card[data-actor="network"].highlight,
+.actor-card[data-actor="atmNetwork"].highlight,
+.actor-card[data-actor="clearingHouse"].highlight {
     transform: translate(-50%, -50%) scale(1.08);
 }
 
-.actor-card[data-actor="network"].dim {
-    transform: translate(-50%, -50%) scale(0.97);
+.actor-card[data-actor="network"].dim,
+.actor-card[data-actor="atmNetwork"].dim,
+.actor-card[data-actor="clearingHouse"].dim {
+    transform: translate(-50%, -50%) scale(0.95);
 }
 
-/* Actor Header */
+/* ===== Actor Header ===== */
 .actor-header {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-3);
 }
 
-.actor-card[data-actor="network"] .actor-header {
+.actor-card[data-actor="network"] .actor-header,
+.actor-card[data-actor="atmNetwork"] .actor-header,
+.actor-card[data-actor="clearingHouse"] .actor-header {
     flex-direction: column;
     text-align: center;
 }
 
-/* Actor Icon */
+/* ===== Actor Icon ===== */
 .actor-icon {
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-md);
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-lg);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 22px;
+    font-size: 24px;
     flex-shrink: 0;
-    transition: transform var(--transition-base);
+    position: relative;
+    transition: all var(--duration-base) var(--ease-out);
+}
+
+.actor-icon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+    opacity: 0;
+    transition: opacity var(--duration-base) var(--ease-out);
 }
 
 .actor-card:hover .actor-icon {
     transform: scale(1.1);
 }
 
-/* Actor Icon Colors */
-.actor-card[data-actor="cardholder"] .actor-icon { 
-    background: var(--color-cardholder-light); 
+.actor-card:hover .actor-icon::before {
+    opacity: 1;
 }
 
-.actor-card[data-actor="merchant"] .actor-icon { 
-    background: var(--color-merchant-light); 
+/* Icon backgrounds per actor type */
+.actor-card[data-actor="cardholder"] .actor-icon,
+.actor-card[data-actor="user"] .actor-icon,
+.actor-card[data-actor="beneficiary"] .actor-icon { 
+    background: var(--color-cardholder-light);
+}
+.actor-card[data-actor="cardholder"] .actor-icon::before,
+.actor-card[data-actor="user"] .actor-icon::before,
+.actor-card[data-actor="beneficiary"] .actor-icon::before { 
+    box-shadow: 0 0 20px var(--color-cardholder-glow);
 }
 
-.actor-card[data-actor="acquirer"] .actor-icon { 
-    background: var(--color-acquirer-light); 
+.actor-card[data-actor="merchant"] .actor-icon,
+.actor-card[data-actor="atm"] .actor-icon { 
+    background: var(--color-merchant-light);
+}
+.actor-card[data-actor="merchant"] .actor-icon::before,
+.actor-card[data-actor="atm"] .actor-icon::before { 
+    box-shadow: 0 0 20px var(--color-merchant-glow);
 }
 
-.actor-card[data-actor="network"] .actor-icon { 
-    background: var(--color-network-light); 
+.actor-card[data-actor="acquirer"] .actor-icon,
+.actor-card[data-actor="atmBank"] .actor-icon,
+.actor-card[data-actor="destinationBank"] .actor-icon { 
+    background: var(--color-acquirer-light);
+}
+.actor-card[data-actor="acquirer"] .actor-icon::before,
+.actor-card[data-actor="atmBank"] .actor-icon::before,
+.actor-card[data-actor="destinationBank"] .actor-icon::before { 
+    box-shadow: 0 0 20px var(--color-acquirer-glow);
 }
 
-.actor-card[data-actor="issuer"] .actor-icon { 
-    background: var(--color-issuer-light); 
+.actor-card[data-actor="network"] .actor-icon,
+.actor-card[data-actor="atmNetwork"] .actor-icon,
+.actor-card[data-actor="clearingHouse"] .actor-icon { 
+    background: var(--color-network-light);
+}
+.actor-card[data-actor="network"] .actor-icon::before,
+.actor-card[data-actor="atmNetwork"] .actor-icon::before,
+.actor-card[data-actor="clearingHouse"] .actor-icon::before { 
+    box-shadow: 0 0 20px var(--color-network-glow);
 }
 
-/* Actor Info */
+.actor-card[data-actor="issuer"] .actor-icon,
+.actor-card[data-actor="mpIssuer"] .actor-icon { 
+    background: var(--color-issuer-light);
+}
+.actor-card[data-actor="issuer"] .actor-icon::before,
+.actor-card[data-actor="mpIssuer"] .actor-icon::before { 
+    box-shadow: 0 0 20px var(--color-issuer-glow);
+}
+
+/* ===== Actor Info ===== */
 .actor-info h3 {
-    font-size: 14px;
-    font-weight: 700;
+    font-size: var(--text-base);
+    font-weight: 600;
     color: var(--text-primary);
+    letter-spacing: -0.01em;
     margin-bottom: 2px;
 }
 
 .actor-info p {
-    font-size: 11px;
-    color: var(--text-muted);
-    line-height: 1.3;
+    font-size: var(--text-xs);
+    color: var(--text-tertiary);
+    font-weight: 500;
 }
 
-.actor-card[data-actor="network"] .actor-info h3 {
-    font-size: 15px;
-}
-
-/* MP Badge */
+/* ===== MP Badge ===== */
 .mp-badge {
     position: absolute;
-    top: -10px;
-    right: -10px;
-    padding: 4px 10px;
-    background: var(--meli-yellow);
-    color: var(--meli-dark);
+    top: -8px;
+    right: -8px;
+    padding: var(--space-1) var(--space-3);
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     border-radius: var(--radius-full);
-    box-shadow: 0 2px 8px var(--meli-yellow-glow);
-    white-space: nowrap;
     display: none;
+    box-shadow: var(--shadow-md);
 }
 
 .mp-badge.visible {
@@ -194,7 +283,7 @@
 
 .mp-badge.acquirer {
     background: var(--mp-acquirer);
-    color: white;
+    color: var(--text-inverse);
 }
 
 .mp-badge.issuer {
@@ -202,151 +291,113 @@
     color: white;
 }
 
-/* ============================================
-   INFO TAG - Interchange, MDR, Scheme Fee
-   ============================================ */
-
+/* ===== Info Tag ===== */
 .info-tag {
-    margin-top: 12px;
-    padding: 8px 12px;
-    font-size: 11px;
+    margin-top: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
     font-weight: 600;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
     text-align: center;
     cursor: help;
-    transition: var(--transition-base);
+    transition: all var(--duration-base) var(--ease-out);
 }
 
-/* Income tag (recibe dinero) - Verde/Amarillo */
 .info-tag.income {
-    background: linear-gradient(135deg, rgba(255, 230, 0, 0.15), rgba(0, 166, 80, 0.1));
-    color: var(--mp-acquirer);
-    border: 1px solid rgba(0, 166, 80, 0.2);
-    animation: incomeGlow 2.5s ease-in-out infinite;
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--green-400);
+    border: 1px solid rgba(74, 222, 128, 0.2);
 }
 
-/* Expense tag (paga dinero) - Rojo suave */
 .info-tag.expense {
-    background: rgba(239, 68, 68, 0.08);
-    color: #DC2626;
-    border: 1px solid rgba(239, 68, 68, 0.15);
+    background: rgba(248, 113, 113, 0.1);
+    color: var(--red-400);
+    border: 1px solid rgba(248, 113, 113, 0.2);
 }
 
-/* Animación sutil para income */
-@keyframes incomeGlow {
-    0%, 100% { 
-        box-shadow: 0 0 0 0 rgba(255, 230, 0, 0);
-    }
-    50% { 
-        box-shadow: 0 0 12px 2px rgba(255, 230, 0, 0.3);
-    }
+.info-tag.neutral {
+    background: var(--bg-hover);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-subtle);
 }
 
-/* Hover en info tag */
 .info-tag:hover {
     transform: scale(1.02);
 }
 
-.info-tag.income:hover {
-    background: linear-gradient(135deg, rgba(255, 230, 0, 0.25), rgba(0, 166, 80, 0.15));
-}
-
-.info-tag.expense:hover {
-    background: rgba(239, 68, 68, 0.12);
-}
-
-/* En card activa, sin animación */
-.actor-card.active .info-tag.income {
-    animation: none;
-    box-shadow: 0 0 8px 1px rgba(255, 230, 0, 0.4);
-}
-
-/* ============================================
-   Brand Logos (Network Card)
-   ============================================ */
-
+/* ===== Brand Logos ===== */
 .brand-logos {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-subtle);
 }
 
 .brand-logo {
-    width: 40px;
-    height: 26px;
-    border-radius: 4px;
+    width: 44px;
+    height: 28px;
+    border-radius: var(--radius-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 9px;
-    font-weight: 800;
-    transition: transform var(--transition-fast);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    transition: all var(--duration-fast) var(--ease-out);
     cursor: pointer;
 }
 
 .brand-logo:hover {
-    transform: scale(1.15);
+    transform: translateY(-2px) scale(1.05);
 }
 
 .brand-logo.visa {
-    background: linear-gradient(135deg, #1A1F71, #2B3990);
+    background: linear-gradient(135deg, #1A1F71, #00579F);
     color: white;
+    box-shadow: 0 4px 12px rgba(26, 31, 113, 0.4);
 }
 
 .brand-logo.mastercard {
     background: linear-gradient(135deg, #EB001B, #F79E1B);
     color: white;
+    box-shadow: 0 4px 12px rgba(235, 0, 27, 0.4);
 }
 
 .brand-logo.amex {
-    background: linear-gradient(135deg, #006FCF, #0099DF);
+    background: linear-gradient(135deg, #006FCF, #00A1E4);
     color: white;
+    box-shadow: 0 4px 12px rgba(0, 111, 207, 0.4);
 }
 
-/* ============================================
-   Responsive
-   ============================================ */
-
-@media (max-width: 640px) {
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .diagram-area {
+        padding: var(--space-4);
+    }
+    
     .actor-card {
-        min-width: 120px;
-        padding: 12px 14px;
+        min-width: 140px;
+        padding: var(--space-3);
     }
     
     .actor-icon {
-        width: 36px;
-        height: 36px;
-        font-size: 18px;
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
     }
     
     .actor-info h3 {
-        font-size: 12px;
+        font-size: var(--text-sm);
     }
     
     .actor-info p {
         display: none;
     }
     
-    .mp-badge {
-        font-size: 8px;
-        padding: 3px 8px;
-    }
-    
     .info-tag {
         font-size: 9px;
-        padding: 6px 8px;
-    }
-    
-    .brand-logos {
-        gap: 8px;
-    }
-    
-    .brand-logo {
-        width: 32px;
-        height: 20px;
-        font-size: 7px;
+        padding: var(--space-1) var(--space-2);
     }
 }
