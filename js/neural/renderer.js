@@ -8,9 +8,6 @@ class NeuralRenderer {
         this.canvasArea = options.canvasArea || document.querySelector('.canvas-area');
         this.sidebar = options.sidebar || document.querySelector('.sidebar-panel');
         this.flowConfig = options.flowConfig || {};
-        
-        this.nodes = [];
-        this.paths = [];
     }
     
     render() {
@@ -29,28 +26,28 @@ class NeuralRenderer {
         const paths = this.flowConfig.paths || [];
         
         return `
-            <svg class="neural-svg" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMid meet">
+            <svg class="neural-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
                 <defs>
                     <!-- Gradientes -->
                     <linearGradient id="grad-data" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.3"/>
+                        <stop offset="0%" stop-color="#60A5FA" stop-opacity="0.2"/>
                         <stop offset="50%" stop-color="#60A5FA"/>
-                        <stop offset="100%" stop-color="#60A5FA" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#60A5FA" stop-opacity="0.2"/>
                     </linearGradient>
                     <linearGradient id="grad-auth" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#4ADE80" stop-opacity="0.3"/>
+                        <stop offset="0%" stop-color="#4ADE80" stop-opacity="0.2"/>
                         <stop offset="50%" stop-color="#4ADE80"/>
-                        <stop offset="100%" stop-color="#4ADE80" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#4ADE80" stop-opacity="0.2"/>
                     </linearGradient>
                     <linearGradient id="grad-money" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#FFE600" stop-opacity="0.3"/>
+                        <stop offset="0%" stop-color="#FFE600" stop-opacity="0.2"/>
                         <stop offset="50%" stop-color="#FFE600"/>
-                        <stop offset="100%" stop-color="#FFE600" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#FFE600" stop-opacity="0.2"/>
                     </linearGradient>
                     <linearGradient id="grad-response" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#C084FC" stop-opacity="0.3"/>
+                        <stop offset="0%" stop-color="#C084FC" stop-opacity="0.2"/>
                         <stop offset="50%" stop-color="#C084FC"/>
-                        <stop offset="100%" stop-color="#C084FC" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#C084FC" stop-opacity="0.2"/>
                     </linearGradient>
                     
                     <!-- Filtro glow -->
