@@ -46,7 +46,19 @@ class NeuralApp {
         // Renderizar UI
         this.renderer.render();
         this.renderer.renderSidebar(this.config);
-        
+
+        // Calcular paths dinámicamente una vez el layout esté completo
+        requestAnimationFrame(() => {
+            this.renderer.updatePaths(this.config);
+        });
+
+        // Recalcular paths al cambiar el tamaño de ventana
+        window.addEventListener('resize', () => {
+            requestAnimationFrame(() => {
+                this.renderer.updatePaths(this.config);
+            });
+        });
+
         // Inicializar simulación
         this.simulation = new NeuralSimulation({
             canvas: document.querySelector('.neural-svg'),

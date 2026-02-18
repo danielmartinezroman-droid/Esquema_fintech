@@ -62,22 +62,15 @@ const FLOW_CONFIGS = {
             }
         ],
         
-        // Paths con viewBox 1000x600 - Coordenadas ajustadas
+        // Paths dinámicos — calculados desde posición real de los nodos
         paths: [
-            // 1: Cliente → Comercio (horizontal arriba)
-            { id: 'path1', d: 'M 150 80 L 850 80', type: 'data' },
-            // 2: Comercio → Adquirente (vertical derecha)
-            { id: 'path2', d: 'M 880 120 L 880 480', type: 'auth' },
-            // 3: Adquirente → Red (diagonal hacia centro)
-            { id: 'path3', d: 'M 820 520 Q 650 450 550 350', type: 'data' },
-            // 4: Red → Emisor (diagonal hacia abajo izq)
-            { id: 'path4', d: 'M 450 350 Q 300 450 180 480', type: 'auth' },
-            // 5: Emisor → Red (respuesta diagonal)
-            { id: 'path5', d: 'M 180 480 Q 300 400 450 320', type: 'response' },
-            // 6: Red → Adquirente (respuesta diagonal)
-            { id: 'path6', d: 'M 550 320 Q 700 400 820 480', type: 'response' },
-            // 7: Adquirente → Comercio (dinero sube)
-            { id: 'path7', d: 'M 850 480 L 850 120', type: 'money' }
+            { id: 'path1', from: 'cardholder', to: 'merchant',  type: 'data'     },
+            { id: 'path2', from: 'merchant',   to: 'acquirer',  type: 'auth'     },
+            { id: 'path3', from: 'acquirer',   to: 'network',   type: 'data'     },
+            { id: 'path4', from: 'network',    to: 'issuer',    type: 'auth'     },
+            { id: 'path5', from: 'issuer',     to: 'network',   type: 'response' },
+            { id: 'path6', from: 'network',    to: 'acquirer',  type: 'response' },
+            { id: 'path7', from: 'acquirer',   to: 'merchant',  type: 'money'    }
         ],
         
         steps: [
@@ -210,22 +203,15 @@ const FLOW_CONFIGS = {
             }
         ],
         
-        // Paths con viewBox 1000x600
+        // Paths dinámicos — calculados desde posición real de los nodos
         paths: [
-            // 1: Cliente → ATM (horizontal arriba)
-            { id: 'path1', d: 'M 150 80 L 850 80', type: 'data' },
-            // 2: ATM → Banco ATM (vertical derecha)
-            { id: 'path2', d: 'M 880 120 L 880 480', type: 'auth' },
-            // 3: Banco ATM → Red (diagonal hacia centro)
-            { id: 'path3', d: 'M 820 520 Q 650 450 550 350', type: 'data' },
-            // 4: Red → Emisor (diagonal hacia abajo izq)
-            { id: 'path4', d: 'M 450 350 Q 300 450 180 480', type: 'auth' },
-            // 5: Emisor → Red (respuesta)
-            { id: 'path5', d: 'M 180 480 Q 300 400 450 320', type: 'response' },
-            // 6: Red → Banco ATM (respuesta)
-            { id: 'path6', d: 'M 550 320 Q 700 400 820 480', type: 'response' },
-            // 7: Banco ATM → ATM (dinero sube)
-            { id: 'path7', d: 'M 850 480 L 850 120', type: 'money' }
+            { id: 'path1', from: 'cardholder', to: 'atm',      type: 'data'     },
+            { id: 'path2', from: 'atm',        to: 'atmBank',  type: 'auth'     },
+            { id: 'path3', from: 'atmBank',    to: 'network',  type: 'data'     },
+            { id: 'path4', from: 'network',    to: 'issuer',   type: 'auth'     },
+            { id: 'path5', from: 'issuer',     to: 'network',  type: 'response' },
+            { id: 'path6', from: 'network',    to: 'atmBank',  type: 'response' },
+            { id: 'path7', from: 'atmBank',    to: 'atm',      type: 'money'    }
         ],
         
         steps: [
@@ -357,16 +343,12 @@ const FLOW_CONFIGS = {
             }
         ],
         
-        // Paths para transferencia (flujo diferente)
+        // Paths dinámicos — calculados desde posición real de los nodos
         paths: [
-            // 1: Usuario → MP Emisor
-            { id: 'path1', d: 'M 150 80 L 850 80', type: 'data' },
-            // 2: MP Emisor → Cámara
-            { id: 'path2', d: 'M 850 120 Q 700 250 550 300', type: 'auth' },
-            // 3: Cámara → Banco Destino
-            { id: 'path3', d: 'M 550 350 Q 700 450 850 500', type: 'money' },
-            // 4: Banco Destino → Beneficiario
-            { id: 'path4', d: 'M 820 520 L 180 520', type: 'money' }
+            { id: 'path1', from: 'user',         to: 'mpIssuer',      type: 'data'  },
+            { id: 'path2', from: 'mpIssuer',     to: 'clearingHouse', type: 'auth'  },
+            { id: 'path3', from: 'clearingHouse',to: 'destBank',      type: 'money' },
+            { id: 'path4', from: 'destBank',     to: 'beneficiary',   type: 'money' }
         ],
         
         steps: [

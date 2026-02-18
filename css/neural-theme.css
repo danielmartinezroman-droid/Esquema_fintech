@@ -107,12 +107,20 @@ html, body {
     display: flex;
     flex: 1;
     padding-top: 64px;
+    overflow: hidden;
+    height: 100vh;
 }
 
 .canvas-area {
     flex: 1;
     position: relative;
     overflow: hidden;
+}
+
+/* Canvas interno — llena el canvas-area completamente */
+.neural-canvas {
+    position: absolute;
+    inset: 0;
 }
 
 .sidebar-panel {
@@ -422,6 +430,7 @@ html, body {
     height: 100%;
     z-index: 5;
     pointer-events: none;
+    overflow: visible;
 }
 
 .neural-path {

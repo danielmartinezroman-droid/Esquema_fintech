@@ -24,9 +24,10 @@ class NeuralRenderer {
     
     renderSVG() {
         const paths = this.flowConfig.paths || [];
-        
+
+        // El SVG NO usa viewBox — coordenadas en píxeles reales del canvas
         return `
-            <svg class="neural-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
+            <svg class="neural-svg" xmlns="http://www.w3.org/2000/svg">
                 <defs>
                     <!-- Gradientes -->
                     <linearGradient id="grad-data" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -49,7 +50,7 @@ class NeuralRenderer {
                         <stop offset="50%" stop-color="#C084FC"/>
                         <stop offset="100%" stop-color="#C084FC" stop-opacity="0.2"/>
                     </linearGradient>
-                    
+
                     <!-- Filtro glow -->
                     <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
                         <feGaussianBlur stdDeviation="3" result="blur"/>
@@ -59,16 +60,101 @@ class NeuralRenderer {
                         </feMerge>
                     </filter>
                 </defs>
-                
-                <!-- Paths -->
+
+                <!-- Paths — d="" se calculará dinámicamente con updatePaths() -->
                 ${paths.map(p => `
-                    <path id="${p.id}" 
-                          class="neural-path type-${p.type}" 
-                          d="${p.d}"
+                    <path id="${p.id}"
+                          class="neural-path type-${p.type}"
+                          d=""
                           stroke="url(#grad-${p.type})"/>
                 `).join('')}
             </svg>
         `;
+    }
+
+    // ─── Calcula los paths SVG basándose en la posición real de los nodos ───
+    updatePaths(flowConfig) {
+        const paths = (flowConfig || this.flowConfig).paths || [];
+        const canvasEl = this.canvasArea ? this.canvasArea.querySelector('.neural-canvas') : null;
+        if (!canvasEl) return;
+
+        const canvasRect = canvasEl.getBoundingClientRect();
+        if (canvasRect.width === 0) return; // Layout aún no está listo
+
+        paths.forEach(pathConfig => {
+            const pathEl = document.getElementById(pathConfig.id);
+            if (!pathEl) return;
+
+            const fromNode = document.querySelector(`[data-node="${pathConfig.from}"]`);
+            const toNode   = document.querySelector(`[data-node="${pathConfig.to}"]`);
+            if (!fromNode || !toNode) return;
+
+            const fromRect = fromNode.getBoundingClientRect();
+            const toRect   = toNode.getBoundingClientRect();
+            const { sx, sy, ex, ey } = this._getEdgePoints(fromRect, toRect, canvasRect);
+
+            pathEl.setAttribute('d', this._getCurvedPath(sx, sy, ex, ey));
+        });
+    }
+
+    _getEdgePoints(fromRect, toRect, canvasRect) {
+        const fx = fromRect.left + fromRect.width  / 2 - canvasRect.left;
+        const fy = fromRect.top  + fromRect.height / 2 - canvasRect.top;
+        const tx = toRect.left   + toRect.width    / 2 - canvasRect.left;
+        const ty = toRect.top    + toRect.height   / 2 - canvasRect.top;
+
+        const dx  = tx - fx;
+        const dy  = ty - fy;
+        const adx = Math.abs(dx);
+        const ady = Math.abs(dy);
+
+        let sx, sy, ex, ey;
+
+        if (adx > ady * 1.3) {
+            // Predominantemente horizontal
+            if (dx > 0) {
+                sx = fromRect.right  - canvasRect.left; sy = fy;
+                ex = toRect.left     - canvasRect.left; ey = ty;
+            } else {
+                sx = fromRect.left   - canvasRect.left; sy = fy;
+                ex = toRect.right    - canvasRect.left; ey = ty;
+            }
+        } else if (ady > adx * 1.3) {
+            // Predominantemente vertical
+            if (dy > 0) {
+                sx = fx; sy = fromRect.bottom - canvasRect.top;
+                ex = tx; ey = toRect.top      - canvasRect.top;
+            } else {
+                sx = fx; sy = fromRect.top    - canvasRect.top;
+                ex = tx; ey = toRect.bottom   - canvasRect.top;
+            }
+        } else {
+            // Diagonal — salir / entrar por las esquinas más próximas
+            if (dx > 0 && dy > 0) {
+                sx = fromRect.right  - canvasRect.left; sy = fromRect.bottom - canvasRect.top;
+                ex = toRect.left     - canvasRect.left; ey = toRect.top      - canvasRect.top;
+            } else if (dx > 0) {
+                sx = fromRect.right  - canvasRect.left; sy = fromRect.top    - canvasRect.top;
+                ex = toRect.left     - canvasRect.left; ey = toRect.bottom   - canvasRect.top;
+            } else if (dy > 0) {
+                sx = fromRect.left   - canvasRect.left; sy = fromRect.bottom - canvasRect.top;
+                ex = toRect.right    - canvasRect.left; ey = toRect.top      - canvasRect.top;
+            } else {
+                sx = fromRect.left   - canvasRect.left; sy = fromRect.top    - canvasRect.top;
+                ex = toRect.right    - canvasRect.left; ey = toRect.bottom   - canvasRect.top;
+            }
+        }
+
+        return { sx, sy, ex, ey };
+    }
+
+    _getCurvedPath(x1, y1, x2, y2) {
+        const mx = (x1 + x2) / 2;
+        const my = (y1 + y2) / 2;
+        // Punto de control perpendicular a la línea (curvatura suave)
+        const cx = mx - (y2 - y1) * 0.25;
+        const cy = my + (x2 - x1) * 0.25;
+        return `M ${Math.round(x1)} ${Math.round(y1)} Q ${Math.round(cx)} ${Math.round(cy)} ${Math.round(x2)} ${Math.round(y2)}`;
     }
     
     renderNodes() {

@@ -140,15 +140,19 @@ class NeuralSimulation {
                     
                     try {
                         const point = path.getPointAtLength(progress * pathLength);
-                        const svgRect = this.canvas.getBoundingClientRect();
+
+                        // Sin viewBox el SVG usa coordenadas de píxeles reales (escala 1:1)
                         const viewBox = this.canvas.viewBox.baseVal;
-                        
-                        // Convertir coordenadas SVG a coordenadas de pantalla
-                        const scaleX = svgRect.width / viewBox.width;
-                        const scaleY = svgRect.height / viewBox.height;
-                        
-                        imp.element.style.left = `${point.x * scaleX}px`;
-                        imp.element.style.top = `${point.y * scaleY}px`;
+                        let x = point.x;
+                        let y = point.y;
+                        if (viewBox && viewBox.width > 0 && viewBox.height > 0) {
+                            const svgRect = this.canvas.getBoundingClientRect();
+                            x = point.x * (svgRect.width  / viewBox.width);
+                            y = point.y * (svgRect.height / viewBox.height);
+                        }
+
+                        imp.element.style.left    = `${x}px`;
+                        imp.element.style.top     = `${y}px`;
                         imp.element.style.opacity = progress > 0 && progress < 0.95 ? 1 : 0;
                     } catch (e) {
                         // Path might not be valid
